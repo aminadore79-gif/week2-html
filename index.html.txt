@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>나의 첫 웹사이트</title>
+</head>
+<body>
+    <h1>안녕하세요! aminadore79-gif입니다. 👋</h1>
+    <hr>
+    <h2>1. 나의 목표</h2>
+    <p>Git을 마스터하고 멋진 AI 개발자가 되는 것입니다.</p>
+    
+    <h2>2. 좋아하는 것</h2>
+    <p>코딩, 엑셀, 그리고 치킨!</p>
+    
+    <h2>3. 깃허브 주소</h2>
+    <a href="https://github.com/aminadore79-gif">제 깃허브로 놀러오세요!</a>
+</body>
+</html>
