@@ -1,0 +1,27 @@
+body {
+    background-color: #f4f4f9;
+    text-align: center;
+}
+
+h1 {
+    color: #ff6347;
+}
+
+.btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 8px;
+    display: inline-block;
+    font-weight: bold;
+}
+
+.btn:hover {
+    background-color: #45a049;
+}
+
+ul {
+    list-style-position: inside;
+    /* 점(bullet)을 안쪽으로 끌어오기 */
+}
