@@ -31,6 +31,14 @@
     <h3>🤖 앗, 잠깐만요!</h3>
 <button onclick="sayHello()">🤖 맞춤형 인사 받기</button>
 <button onclick="toggleDarkMode()">🌙 다크모드 스위치</button>
+<hr>
+    <h3>💡 오늘의 명언</h3>
+    <p id="quote-text">명언을 가져오는 중입니다...</p>
+    <p id="quote-author">-</p>
+    <button onclick="getQuote()">🔄 새로운 명언 받기</button>
+                        <hr>
+    <h3>🌤️ 오늘의 날씨 (서울)</h3>
+    <p id="weather-info">날씨 정보를 가져오는 중입니다...</p>
 <script>
 function sayHello() {
     // 1. 브라우저의 비밀 수첩에서 'myGuestName'이라는 기록을 몰래 꺼내봅니다.
@@ -60,6 +68,51 @@ function toggleDarkMode() {
     // 문서의 body(몸통)에 'dark-theme'이라는 이름표(화장)를 붙였다 뗐다 해라!
     document.body.classList.toggle("dark-theme");
 }
+// ... (위에는 기존에 있던 sayHello, toggleDarkMode 등의 코드가 있습니다) ...
+
+        // 💡 오늘의 명언을 가져오는 마법의 함수!
+        function getQuote() {
+            fetch("https://korean-advice-open-api.vercel.app/api/advice")
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                document.getElementById("quote-text").innerText = '"' + data.message + '"';
+                document.getElementById("quote-author").innerText = "- " + data.author + " -";
+            })
+            .catch(function(error) {
+                document.getElementById("quote-text").innerText = "앗, 명언을 가져오는데 실패했어요! 😭";
+                document.getElementById("quote-author").innerText = "";
+            });
+        }
+
+        getQuote(); // 처음에 명언 띄우기
+        // 🌤️ 실시간 서울 날씨를 가져오는 함수!
+    function getWeather() {
+        // 1. 서울의 위도(37.5665), 경도(126.9780) 데이터를 가진 날씨 식당으로 웨이터를 보냅니다.
+        fetch("https://api.open-meteo.com/v1/forecast?latitude=37.5665&longitude=126.9780&current_weather=true")
+        .then(function(response) {
+            return response.json(); // 포장지 뜯기
+        })
+        .then(function(data) {
+            // 2. 포장을 뜯어서 현재 기온(temperature)만 쏙 빼옵니다.
+            let currentTemp = data.current_weather.temperature;
+            
+            // 3. 우리의 날씨 빈 접시에 예쁘게 담아줍니다.
+            document.getElementById("weather-info").innerText = "현재 기온은 " + currentTemp + "°C 입니다! 🌡️";
+        })
+        .catch(function(error) {
+            document.getElementById("weather-info").innerText = "날씨를 가져오는데 실패했어요 😢";
+        });
+    }
+
+    // 🚀 웹사이트가 켜질 때 명언과 함께 날씨 웨이터도 바로 출동시킵니다!
+    getWeather();
+
+    </script>
+</body>
+</html>
+
     </script>
 </body>
 </html>
