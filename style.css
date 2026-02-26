@@ -25,3 +25,9 @@ ul {
     list-style-position: inside;
     /* 점(bullet)을 안쪽으로 끌어오기 */
 }
+
+/* 🌙 다크 모드 화장법 */
+.dark-theme {
+    background-color: #222222;
+    color: #ffffff;
+}

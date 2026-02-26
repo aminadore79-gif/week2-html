@@ -2,14 +2,15 @@
 <html>
 <head>
 
-
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <title>최종 복습 페이지</title>
-<title>나의 첫 웹사이트</title>
     <link rel="stylesheet" href="style.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 <body>
-    <h1>안녕하세요! aminadore79-gif입니다. 👋</h1>
+<h1 id="main-title">안녕하세요! aminadore79-gif입니다. 👋</h1>
     <hr>
     <h2>1. 나의 목표</h2>
     <p>Git을 마스터하고 멋진 AI 개발자가 되는 것입니다.</p>
@@ -26,5 +27,39 @@
      <a href="food.html" class="btn">🍗 내가 좋아하는 음식 보러가기</a>
 
     </ul>
+<hr>
+    <h3>🤖 앗, 잠깐만요!</h3>
+<button onclick="sayHello()">🤖 맞춤형 인사 받기</button>
+<button onclick="toggleDarkMode()">🌙 다크모드 스위치</button>
+<script>
+function sayHello() {
+    // 1. 브라우저의 비밀 수첩에서 'myGuestName'이라는 기록을 몰래 꺼내봅니다.
+    let savedName = localStorage.getItem("myGuestName");
+
+    if (savedName) {
+        // 수첩에 이름이 적혀 있다면? -> 안 물어보고 바로 아는 척하기!
+        Swal.fire(savedName + '님, 또 오셨군요!', '다시 뵙게 되어 반갑습니다! 🎉', 'info');
+        document.getElementById("main-title").innerText = "반가워요! " + savedName + "님 👋";
+    } else {
+        // 수첩이 텅 비어있다면? -> 처음 온 사람이니까 이름을 물어보기!
+        let newName = prompt("방문자님의 이름(또는 별명)은 무엇인가요?");
+
+        if (newName != null && newName != "") {
+            // 이름을 적어줬다면 비밀 수첩에 'myGuestName'이라는 이름으로 꾹꾹 눌러 적어둡니다.
+            localStorage.setItem("myGuestName", newName);
+            
+            Swal.fire(newName + '님, 환영합니다!', '이름을 제 수첩에 잘 적어두었습니다! 📝', 'success');
+            document.getElementById("main-title").innerText = "안녕하세요! " + newName + "님 👋";
+        } else {
+            // 아무것도 안 적고 취소한 경우
+            Swal.fire('환영합니다!', '제 웹사이트에 오신 것을 환영합니다! 🎉', 'success');
+        }
+    }
+}
+function toggleDarkMode() {
+    // 문서의 body(몸통)에 'dark-theme'이라는 이름표(화장)를 붙였다 뗐다 해라!
+    document.body.classList.toggle("dark-theme");
+}
+    </script>
 </body>
 </html>
