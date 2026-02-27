@@ -1,22 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-
     <meta charset="UTF-8">
     <title>최종 복습 페이지</title>
     <link rel="stylesheet" href="style.css">
     
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 </head>
 <body>
-<h1 id="main-title">안녕하세요! aminadore79-gif입니다. 👋</h1>
+    <h1 id="main-title">안녕하세요! aminadore79-gif입니다. 👋</h1>
     <hr>
+    
     <h2>1. 나의 목표</h2>
-    <p>Git을 마스터하고 멋진 AI 개발자가 되는 것입니다.</p>
+    <p>Git을 마스터하고 멋진 AI 증강 개발자가 되는 것입니다.</p>
     
     <h2>2. 좋아하는 것</h2>
-    <p>코딩, 엑셀, 그리고 치킨!</p>
+    <p>코딩, 운동, 그리고 치킨!</p>
     
     <h2>3. 깃허브 주소</h2>
     <a href="https://github.com/aminadore79-gif">제 깃허브로 놀러오세요!</a>
@@ -24,53 +23,56 @@
     <hr>
     <h2>📂 내 최애 메뉴</h2>
     <ul>
-     <a href="food.html" class="btn">🍗 내가 좋아하는 음식 보러가기</a>
-
+        <a href="food.html" class="btn">🍗 내가 좋아하는 음식 보러가기</a>
     </ul>
-<hr>
+    
+    <hr>
     <h3>🤖 앗, 잠깐만요!</h3>
-<button onclick="sayHello()">🤖 맞춤형 인사 받기</button>
-<button onclick="toggleDarkMode()">🌙 다크모드 스위치</button>
-<hr>
+    <button onclick="sayHello()">🤖 맞춤형 인사 받기</button>
+    <button onclick="toggleDarkMode()">🌙 다크모드 스위치</button>
+    
+    <hr>
     <h3>💡 오늘의 명언</h3>
     <p id="quote-text">명언을 가져오는 중입니다...</p>
     <p id="quote-author">-</p>
     <button onclick="getQuote()">🔄 새로운 명언 받기</button>
-                        <hr>
+    
+    <hr>
     <h3>🌤️ 오늘의 날씨 (서울)</h3>
     <p id="weather-info">날씨 정보를 가져오는 중입니다...</p>
-<script>
-function sayHello() {
-    // 1. 브라우저의 비밀 수첩에서 'myGuestName'이라는 기록을 몰래 꺼내봅니다.
-    let savedName = localStorage.getItem("myGuestName");
 
-    if (savedName) {
-        // 수첩에 이름이 적혀 있다면? -> 안 물어보고 바로 아는 척하기!
-        Swal.fire(savedName + '님, 또 오셨군요!', '다시 뵙게 되어 반갑습니다! 🎉', 'info');
-        document.getElementById("main-title").innerText = "반가워요! " + savedName + "님 👋";
-    } else {
-        // 수첩이 텅 비어있다면? -> 처음 온 사람이니까 이름을 물어보기!
-        let newName = prompt("방문자님의 이름(또는 별명)은 무엇인가요?");
+    <hr>
+    <h3>📝 나의 할 일 목록</h3>
+    <input type="text" id="todo-input" placeholder="오늘 할 일을 적어보세요!">
+    <button onclick="addTask()">➕ 추가하기</button>
+    <ul id="todo-list"></ul>
 
-        if (newName != null && newName != "") {
-            // 이름을 적어줬다면 비밀 수첩에 'myGuestName'이라는 이름으로 꾹꾹 눌러 적어둡니다.
-            localStorage.setItem("myGuestName", newName);
-            
-            Swal.fire(newName + '님, 환영합니다!', '이름을 제 수첩에 잘 적어두었습니다! 📝', 'success');
-            document.getElementById("main-title").innerText = "안녕하세요! " + newName + "님 👋";
-        } else {
-            // 아무것도 안 적고 취소한 경우
-            Swal.fire('환영합니다!', '제 웹사이트에 오신 것을 환영합니다! 🎉', 'success');
+
+    <script>
+        // --- 1. 맞춤형 인사 봇 ---
+        function sayHello() {
+            let savedName = localStorage.getItem("myGuestName");
+            if (savedName) {
+                Swal.fire(savedName + '님, 또 오셨군요!', '다시 뵙게 되어 반갑습니다! 🎉', 'info');
+                document.getElementById("main-title").innerText = "반가워요! " + savedName + "님 👋";
+            } else {
+                let newName = prompt("방문자님의 이름(또는 별명)은 무엇인가요?");
+                if (newName != null && newName != "") {
+                    localStorage.setItem("myGuestName", newName);
+                    Swal.fire(newName + '님, 환영합니다!', '이름을 제 수첩에 잘 적어두었습니다! 📝', 'success');
+                    document.getElementById("main-title").innerText = "안녕하세요! " + newName + "님 👋";
+                } else {
+                    Swal.fire('환영합니다!', '제 웹사이트에 오신 것을 환영합니다! 🎉', 'success');
+                }
+            }
         }
-    }
-}
-function toggleDarkMode() {
-    // 문서의 body(몸통)에 'dark-theme'이라는 이름표(화장)를 붙였다 뗐다 해라!
-    document.body.classList.toggle("dark-theme");
-}
-// ... (위에는 기존에 있던 sayHello, toggleDarkMode 등의 코드가 있습니다) ...
 
-        // 💡 오늘의 명언을 가져오는 마법의 함수!
+        // --- 2. 다크모드 스위치 ---
+        function toggleDarkMode() {
+            document.body.classList.toggle("dark-theme");
+        }
+
+        // --- 3. 명언 API ---
         function getQuote() {
             fetch("https://korean-advice-open-api.vercel.app/api/advice")
             .then(function(response) {
@@ -86,32 +88,81 @@ function toggleDarkMode() {
             });
         }
 
-        getQuote(); // 처음에 명언 띄우기
-        // 🌤️ 실시간 서울 날씨를 가져오는 함수!
-    function getWeather() {
-        // 1. 서울의 위도(37.5665), 경도(126.9780) 데이터를 가진 날씨 식당으로 웨이터를 보냅니다.
-        fetch("https://api.open-meteo.com/v1/forecast?latitude=37.5665&longitude=126.9780&current_weather=true")
-        .then(function(response) {
-            return response.json(); // 포장지 뜯기
-        })
-        .then(function(data) {
-            // 2. 포장을 뜯어서 현재 기온(temperature)만 쏙 빼옵니다.
-            let currentTemp = data.current_weather.temperature;
+        // --- 4. 날씨 API ---
+        function getWeather() {
+            fetch("https://api.open-meteo.com/v1/forecast?latitude=37.5665&longitude=126.9780&current_weather=true")
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                let currentTemp = data.current_weather.temperature;
+                document.getElementById("weather-info").innerText = "현재 기온은 " + currentTemp + "°C 입니다! 🌡️";
+            })
+            .catch(function(error) {
+                document.getElementById("weather-info").innerText = "날씨를 가져오는데 실패했어요 😢";
+            });
+        }
+
+        // --- 5. 할 일 목록 (To-Do List) 마법 ---
+        let todos = [];
+
+        function addTask() {
+            let input = document.getElementById("todo-input");
+            let taskText = input.value;
+
+            if (taskText === "") {
+                Swal.fire("앗!", "할 일을 먼저 적어주세요!", "warning");
+                return;
+            }
+
+            todos.push(taskText);
+            input.value = "";
             
-            // 3. 우리의 날씨 빈 접시에 예쁘게 담아줍니다.
-            document.getElementById("weather-info").innerText = "현재 기온은 " + currentTemp + "°C 입니다! 🌡️";
-        })
-        .catch(function(error) {
-            document.getElementById("weather-info").innerText = "날씨를 가져오는데 실패했어요 😢";
-        });
-    }
+            saveTasks();
+            renderTasks();
+        }
 
-    // 🚀 웹사이트가 켜질 때 명언과 함께 날씨 웨이터도 바로 출동시킵니다!
-    getWeather();
+        function deleteTask(index) {
+            todos.splice(index, 1);
+            saveTasks();
+            renderTasks();
+        }
 
-    </script>
-</body>
-</html>
+        function saveTasks() {
+            localStorage.setItem("myTodos", JSON.stringify(todos));
+        }
+
+        function renderTasks() {
+            let list = document.getElementById("todo-list");
+            list.innerHTML = "";
+
+            for (let i = 0; i < todos.length; i++) {
+                let li = document.createElement("li");
+                li.innerText = todos[i] + " ";
+
+                let deleteBtn = document.createElement("button");
+                deleteBtn.innerText = "❌";
+                deleteBtn.onclick = function() {
+                    deleteTask(i);
+                };
+
+                li.appendChild(deleteBtn);
+                list.appendChild(li);
+            }
+        }
+
+        function loadTasks() {
+            let savedTodos = localStorage.getItem("myTodos");
+            if (savedTodos) {
+                todos = JSON.parse(savedTodos);
+                renderTasks();
+            }
+        }
+
+        // --- 🚀 웹사이트가 켜질 때 자동으로 실행할 명령들 ---
+        getQuote();   // 명언 가져오기
+        getWeather(); // 날씨 가져오기
+        loadTasks();  // 저장된 할 일 목록 불러오기
 
     </script>
 </body>
