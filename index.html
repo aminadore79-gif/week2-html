@@ -4,11 +4,16 @@
     <meta charset="UTF-8">
     <title>최종 복습 페이지</title>
     <link rel="stylesheet" href="style.css">
-    
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <h1 id="main-title">안녕하세요! aminadore79-gif입니다. 👋</h1>
+    <hr>
+
+    <div style="text-align: center; margin: 20px 0;">
+        <img src="cat.jpg" alt="대문 고양이" style="max-width: 300px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+    </div>
+
     <hr>
     
     <h2>1. 나의 목표</h2>
@@ -42,14 +47,19 @@
     <p id="weather-info">날씨 정보를 가져오는 중입니다...</p>
 
     <hr>
+    <h3>🐱 무한 랜덤 고양이 사진</h3>
+    <img id="cat-img" src="https://via.placeholder.com/300?text=Cat+Loading..." alt="귀여운 고양이" style="max-width: 300px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-bottom: 10px;">
+    <br>
+    <button onclick="getCat()">🐾 다른 고양이 보기</button>
+
+    <hr>
     <h3>📝 나의 할 일 목록</h3>
     <input type="text" id="todo-input" placeholder="오늘 할 일을 적어보세요!">
     <button onclick="addTask()">➕ 추가하기</button>
     <ul id="todo-list"></ul>
 
-
     <script>
-        // --- 1. 맞춤형 인사 봇 ---
+        // --- 기존 기능들 (인사, 다크모드, 명언, 날씨) ---
         function sayHello() {
             let savedName = localStorage.getItem("myGuestName");
             if (savedName) {
@@ -67,43 +77,44 @@
             }
         }
 
-        // --- 2. 다크모드 스위치 ---
         function toggleDarkMode() {
             document.body.classList.toggle("dark-theme");
         }
 
-        // --- 3. 명언 API ---
         function getQuote() {
             fetch("https://korean-advice-open-api.vercel.app/api/advice")
-            .then(function(response) {
-                return response.json();
-            })
-            .then(function(data) {
+            .then(response => response.json())
+            .then(data => {
                 document.getElementById("quote-text").innerText = '"' + data.message + '"';
                 document.getElementById("quote-author").innerText = "- " + data.author + " -";
             })
-            .catch(function(error) {
-                document.getElementById("quote-text").innerText = "앗, 명언을 가져오는데 실패했어요! 😭";
-                document.getElementById("quote-author").innerText = "";
+            .catch(error => {
+                document.getElementById("quote-text").innerText = "명언 실패! 😭";
             });
         }
 
-        // --- 4. 날씨 API ---
         function getWeather() {
             fetch("https://api.open-meteo.com/v1/forecast?latitude=37.5665&longitude=126.9780&current_weather=true")
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("weather-info").innerText = "현재 기온은 " + data.current_weather.temperature + "°C 입니다! 🌡️";
+            });
+        }
+
+// --- 🌟 새 기능: 무한 랜덤 고양이 사진 API ---
+        function getCat() {
+            // 귀여운 고양이 사진 식당으로 웨이터 파견!
+            fetch("https://api.thecatapi.com/v1/images/search")
             .then(function(response) {
                 return response.json();
             })
             .then(function(data) {
-                let currentTemp = data.current_weather.temperature;
-                document.getElementById("weather-info").innerText = "현재 기온은 " + currentTemp + "°C 입니다! 🌡️";
-            })
-            .catch(function(error) {
-                document.getElementById("weather-info").innerText = "날씨를 가져오는데 실패했어요 😢";
+                // 고양이 사진 주소(data[0].url)를 img 태그에 쏙 넣어줍니다!
+                document.getElementById("cat-img").src = data[0].url;
             });
         }
 
-        // --- 5. 할 일 목록 (To-Do List) 마법 ---
+        // --- 🌟 업그레이드: 할 일 목록 (취소선 기능 추가) ---
         let todos = [];
 
         function addTask() {
@@ -115,9 +126,21 @@
                 return;
             }
 
-            todos.push(taskText);
+            // [핵심] 이제 글자만 넣는 게 아니라, 완료 여부(isDone)를 같이 묶어서 저장합니다!
+            let newTask = {
+                text: taskText,
+                isDone: false // 처음 추가할 땐 안 한 상태니까 false
+            };
+
+            todos.push(newTask);
             input.value = "";
-            
+            saveTasks();
+            renderTasks();
+        }
+
+        // 할 일 글씨를 클릭하면 완료 상태를 뒤집는 마법!
+        function toggleDone(index) {
+            todos[index].isDone = !todos[index].isDone; // true면 false로, false면 true로!
             saveTasks();
             renderTasks();
         }
@@ -138,7 +161,21 @@
 
             for (let i = 0; i < todos.length; i++) {
                 let li = document.createElement("li");
-                li.innerText = todos[i] + " ";
+                
+                // 글씨 부분을 <span> 태그로 감싸서 클릭할 수 있게 만듭니다.
+                let span = document.createElement("span");
+                span.innerText = todos[i].text;
+                span.style.cursor = "pointer"; // 마우스를 올리면 손가락 모양으로
+                
+                // 만약 이 할 일이 완료된 상태(isDone == true)라면, 취소선 클래스(.done-text)를 붙여줍니다!
+                if (todos[i].isDone === true) {
+                    span.classList.add("done-text");
+                }
+
+                // 글씨를 클릭하면 toggleDone 함수가 실행되게 연결!
+                span.onclick = function() {
+                    toggleDone(i);
+                };
 
                 let deleteBtn = document.createElement("button");
                 deleteBtn.innerText = "❌";
@@ -146,6 +183,7 @@
                     deleteTask(i);
                 };
 
+                li.appendChild(span);
                 li.appendChild(deleteBtn);
                 list.appendChild(li);
             }
@@ -154,15 +192,24 @@
         function loadTasks() {
             let savedTodos = localStorage.getItem("myTodos");
             if (savedTodos) {
-                todos = JSON.parse(savedTodos);
+                let parsedTodos = JSON.parse(savedTodos);
+                
+                // ⚠️ (주의) 예전 방식(단순 글자)으로 저장된 데이터가 있으면 에러가 나므로, 수첩을 한 번 초기화합니다.
+                if (parsedTodos.length > 0 && typeof parsedTodos[0] === "string") {
+                    todos = [];
+                    localStorage.removeItem("myTodos");
+                } else {
+                    todos = parsedTodos;
+                }
                 renderTasks();
             }
         }
 
-        // --- 🚀 웹사이트가 켜질 때 자동으로 실행할 명령들 ---
-        getQuote();   // 명언 가져오기
-        getWeather(); // 날씨 가져오기
-        loadTasks();  // 저장된 할 일 목록 불러오기
+        // --- 🚀 웹사이트가 켜질 때 자동으로 실행할 명령들 --- 
+        getQuote();   // 명언
+        getWeather(); // 날씨
+        getCat();     // 🐶 고양이 사진 먼저 한 장 띄우기!
+        loadTasks();  // 할 일 목록
 
     </script>
 </body>

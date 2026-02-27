@@ -117,3 +117,10 @@ button:hover {
     background-color: #ffeaa7; /* 연한 노란색 배경으로 스르륵 */
     transform: scale(1.1);     /* 버튼 살짝 커지게 */
 }
+/* 5. 완료된 할 일 글씨 스타일 (밑줄 쫙!) */
+.done-text {
+    text-decoration: line-through; /* 글씨 한가운데 밑줄 긋기 */
+    color: #b2bec3;                /* 글씨 색상을 흐린 회색으로 변경 */
+    font-style: italic;            /* 살짝 기울임꼴로 느낌 살리기 */
+    transition: 0.3s;
+}
