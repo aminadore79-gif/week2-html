@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title>최종 복습 페이지</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
+
 <body>
     <h1 id="main-title">안녕하세요! aminadore79-gif입니다. 👋</h1>
     <hr>
 
     <div style="text-align: center; margin: 20px 0;">
-        <img src="cat.jpg" alt="대문 고양이" style="max-width: 300px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+        <img src="cat.jpg" alt="대문 고양이"
+            style="max-width: 300px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
     </div>
 
     <hr>
@@ -22,7 +25,7 @@
     <h3>⏳ 시간은 금이다!</h3>
     <p id="real-time-clock" style="font-size: 30px; font-weight: bold; color: #333; margin: 5px 0;">00:00:00</p>
     <p id="d-day-text" style="font-size: 18px; color: #ff6b6b; font-weight: bold;">목표일까지: 계산 중...</p>
-    
+
     <hr>
     <h2>2. 좋아하는 것</h2>
     <p>코딩, 운동, 그리고 치킨!</p>
@@ -53,7 +56,8 @@
 
     <hr>
     <h3>🐱 무한 랜덤 고양이 사진</h3>
-    <img id="cat-img" src="https://via.placeholder.com/300?text=Cat+Loading..." alt="귀여운 고양이" style="max-width: 300px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-bottom: 10px;">
+    <img id="cat-img" src="https://via.placeholder.com/300?text=Cat+Loading..." alt="귀여운 고양이"
+        style="max-width: 300px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-bottom: 10px;">
     <br>
     <button onclick="getCat()">🐾 다른 고양이 보기</button>
 
@@ -187,15 +191,20 @@
             let today = new Date();
             let difference = targetDate.getTime() - today.getTime();
             let daysLeft = Math.ceil(difference / (1000 * 60 * 60 * 24));
-            
-            if (daysLeft > 0) { document.getElementById("d-day-text").innerText = "올해의 끝까지 D-" + daysLeft + " 🚀"; } 
-            else if (daysLeft === 0) { document.getElementById("d-day-text").innerText = "D-Day! 목표 달성일입니다! 🎉"; } 
+
+            if (daysLeft > 0) { document.getElementById("d-day-text").innerText = "올해의 끝까지 D-" + daysLeft + " 🚀"; }
+            else if (daysLeft === 0) { document.getElementById("d-day-text").innerText = "D-Day! 목표 달성일입니다! 🎉"; }
             else { document.getElementById("d-day-text").innerText = "목표일이 지났습니다! 새로운 목표를 세워볼까요? 🌟"; }
         }
 
-        // --- 🍅 8일 차: 뽀모도로 타이머 JS ---
-        let timeLeft = 25 * 60; 
+        // --- 🍅 9일 차: 알람 소리가 추가된 뽀모도로 타이머 JS ---
+
+        // 1. 테스트를 위해 임시로 3초만 설정해 둡니다! (원래는 25 * 60)
+        let timeLeft = 25 * 60;
         let timerInterval;
+
+        // 🎵 구글 무료 효과음 저장소에서 알람 소리 배달시키기!
+        let alarmSound = new Audio("https://actions.google.com/sounds/v1/alarms/beep_short.ogg");
 
         function updateTimerDisplay() {
             let minutes = String(Math.floor(timeLeft / 60)).padStart(2, '0');
@@ -204,39 +213,45 @@
         }
 
         function startTimer() {
-            if (timerInterval) return; 
+            if (timerInterval) return;
             timerInterval = setInterval(function () {
                 if (timeLeft > 0) {
-                    timeLeft--; 
-                    updateTimerDisplay(); 
+                    timeLeft--;
+                    updateTimerDisplay();
                 } else {
                     clearInterval(timerInterval);
                     timerInterval = null;
-                    Swal.fire("수고하셨습니다!", "25분 집중 완료! 5분간 푹 쉬세요 ☕", "success");
+
+                    // 🌟 대망의 알람 재생 마법! (0초가 되면 삐비빅!)
+                    alarmSound.play();
+
+                    Swal.fire("수고하셨습니다!", "집중 완료! 5분간 푹 쉬세요 ☕", "success");
                 }
             }, 1000);
         }
 
         function pauseTimer() {
-            clearInterval(timerInterval); 
+            clearInterval(timerInterval);
             timerInterval = null;
         }
 
         function resetTimer() {
             pauseTimer();
+            // 🔄 초기화할 때도 3초로 맞춰둡니다. (테스트 끝나면 25 * 60으로 바꿀 거예요!)
             timeLeft = 25 * 60;
             updateTimerDisplay();
         }
 
         // --- 🚀 웹사이트가 켜질 때 자동으로 실행할 명령들 --- 
-        getQuote();   
-        getWeather(); 
-        getCat();     
-        loadTasks();  
+        getQuote();
+        getWeather();
+        getCat();
+        loadTasks();
         updateClock();
         setInterval(updateClock, 1000);
         calculateDday();
 
     </script>
 </body>
+
 </html>
