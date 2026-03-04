@@ -6,6 +6,7 @@
     <title>최종 복습 페이지</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
 
 <body>
@@ -43,6 +44,8 @@
     <h3>🤖 앗, 잠깐만요!</h3>
     <button onclick="sayHello()">🤖 맞춤형 인사 받기</button>
     <button onclick="toggleDarkMode()">🌙 다크모드 스위치</button>
+    <button onclick="fireConfetti()" style="background-color: #9b59b6;">🎊 대망의 피날레 (폭죽 발사!)</button>
+    <hr>
 
     <hr>
     <h3>💡 오늘의 명언</h3>
@@ -240,6 +243,25 @@
             // 🔄 초기화할 때도 3초로 맞춰둡니다. (테스트 끝나면 25 * 60으로 바꿀 거예요!)
             timeLeft = 25 * 60;
             updateTimerDisplay();
+        }
+
+        // =========================================
+        // 🎉 10일 차: 대망의 폭죽 축제 마법!
+        // =========================================
+        function fireConfetti() {
+            // 폭죽 도구를 작동시키는 마법의 주문!
+            confetti({
+                particleCount: 150, // 폭죽 조각 개수 (더 많게 해도 됩니다!)
+                spread: 80,         // 퍼지는 각도
+                origin: { y: 0.6 }  // 화면의 어느 높이에서 터질지 (아래쪽에서 위로 팡!)
+            });
+
+            // 덤으로 축하 팝업까지!
+            Swal.fire(
+                "10일 완성 대성공! 🏆",
+                "여기까지 오신 수강생님, 진심으로 최고입니다! 자랑스러운 나만의 웹사이트 완성!!",
+                "success"
+            );
         }
 
         // --- 🚀 웹사이트가 켜질 때 자동으로 실행할 명령들 --- 
