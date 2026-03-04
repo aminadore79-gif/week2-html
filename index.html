@@ -18,6 +18,12 @@
     
     <h2>1. 나의 목표</h2>
     <p>Git을 마스터하고 멋진 AI 증강 개발자가 되는 것입니다.</p>
+
+    <hr>
+    <h3>⏳ 시간은 금이다!</h3>
+    <p id="real-time-clock" style="font-size: 30px; font-weight: bold; color: #333; margin: 5px 0;">00:00:00</p>
+    <p id="d-day-text" style="font-size: 18px; color: #ff6b6b; font-weight: bold;">목표일까지: 계산 중...</p>
+    <hr>
     
     <h2>2. 좋아하는 것</h2>
     <p>코딩, 운동, 그리고 치킨!</p>
@@ -58,7 +64,7 @@
     <button onclick="addTask()">➕ 추가하기</button>
     <ul id="todo-list"></ul>
 
-    <script>
+ <script>
         // --- 기존 기능들 (인사, 다크모드, 명언, 날씨) ---
         function sayHello() {
             let savedName = localStorage.getItem("myGuestName");
@@ -101,20 +107,16 @@
             });
         }
 
-// --- 🌟 새 기능: 무한 랜덤 고양이 사진 API ---
+        // --- 🌟 무한 랜덤 고양이 사진 API ---
         function getCat() {
-            // 귀여운 고양이 사진 식당으로 웨이터 파견!
             fetch("https://api.thecatapi.com/v1/images/search")
-            .then(function(response) {
-                return response.json();
-            })
+            .then(function(response) { return response.json(); })
             .then(function(data) {
-                // 고양이 사진 주소(data[0].url)를 img 태그에 쏙 넣어줍니다!
                 document.getElementById("cat-img").src = data[0].url;
             });
         }
 
-        // --- 🌟 업그레이드: 할 일 목록 (취소선 기능 추가) ---
+        // --- 🌟 할 일 목록 (To-Do) ---
         let todos = [];
 
         function addTask() {
@@ -126,21 +128,15 @@
                 return;
             }
 
-            // [핵심] 이제 글자만 넣는 게 아니라, 완료 여부(isDone)를 같이 묶어서 저장합니다!
-            let newTask = {
-                text: taskText,
-                isDone: false // 처음 추가할 땐 안 한 상태니까 false
-            };
-
+            let newTask = { text: taskText, isDone: false };
             todos.push(newTask);
             input.value = "";
             saveTasks();
             renderTasks();
         }
 
-        // 할 일 글씨를 클릭하면 완료 상태를 뒤집는 마법!
         function toggleDone(index) {
-            todos[index].isDone = !todos[index].isDone; // true면 false로, false면 true로!
+            todos[index].isDone = !todos[index].isDone;
             saveTasks();
             renderTasks();
         }
@@ -162,26 +158,19 @@
             for (let i = 0; i < todos.length; i++) {
                 let li = document.createElement("li");
                 
-                // 글씨 부분을 <span> 태그로 감싸서 클릭할 수 있게 만듭니다.
                 let span = document.createElement("span");
                 span.innerText = todos[i].text;
-                span.style.cursor = "pointer"; // 마우스를 올리면 손가락 모양으로
+                span.style.cursor = "pointer"; 
                 
-                // 만약 이 할 일이 완료된 상태(isDone == true)라면, 취소선 클래스(.done-text)를 붙여줍니다!
                 if (todos[i].isDone === true) {
                     span.classList.add("done-text");
                 }
 
-                // 글씨를 클릭하면 toggleDone 함수가 실행되게 연결!
-                span.onclick = function() {
-                    toggleDone(i);
-                };
+                span.onclick = function() { toggleDone(i); };
 
                 let deleteBtn = document.createElement("button");
                 deleteBtn.innerText = "❌";
-                deleteBtn.onclick = function() {
-                    deleteTask(i);
-                };
+                deleteBtn.onclick = function() { deleteTask(i); };
 
                 li.appendChild(span);
                 li.appendChild(deleteBtn);
@@ -193,8 +182,6 @@
             let savedTodos = localStorage.getItem("myTodos");
             if (savedTodos) {
                 let parsedTodos = JSON.parse(savedTodos);
-                
-                // ⚠️ (주의) 예전 방식(단순 글자)으로 저장된 데이터가 있으면 에러가 나므로, 수첩을 한 번 초기화합니다.
                 if (parsedTodos.length > 0 && typeof parsedTodos[0] === "string") {
                     todos = [];
                     localStorage.removeItem("myTodos");
@@ -205,11 +192,46 @@
             }
         }
 
-        // --- 🚀 웹사이트가 켜질 때 자동으로 실행할 명령들 --- 
+        // =========================================
+        // ⏰ 7일 차: 시간과 D-Day 마법 시작!
+        // =========================================
+
+        function updateClock() {
+            let now = new Date(); 
+            let hours = String(now.getHours()).padStart(2, '0');
+            let minutes = String(now.getMinutes()).padStart(2, '0');
+            let seconds = String(now.getSeconds()).padStart(2, '0');
+            
+            document.getElementById("real-time-clock").innerText = hours + ":" + minutes + ":" + seconds;
+        }
+
+        function calculateDday() {
+            let currentYear = new Date().getFullYear();
+            let targetDate = new Date(currentYear + "-12-31"); 
+            let today = new Date();
+
+            let difference = targetDate.getTime() - today.getTime();
+            let daysLeft = Math.ceil(difference / (1000 * 60 * 60 * 24)); 
+            
+            if (daysLeft > 0) {
+                document.getElementById("d-day-text").innerText = "올해의 끝까지 D-" + daysLeft + " 🚀";
+            } else if (daysLeft === 0) {
+                document.getElementById("d-day-text").innerText = "D-Day! 목표 달성일입니다! 🎉";
+            } else {
+                document.getElementById("d-day-text").innerText = "목표일이 지났습니다! 새로운 목표를 세워볼까요? 🌟";
+            }
+        }
+
+        // --- 🚀 웹사이트가 켜질 때 자동으로 실행할 명령들 모음 --- 
         getQuote();   // 명언
         getWeather(); // 날씨
-        getCat();     // 🐶 고양이 사진 먼저 한 장 띄우기!
+        getCat();     // 고양이 사진
         loadTasks();  // 할 일 목록
+        
+        // 시간 마법 실행!
+        updateClock();                  
+        setInterval(updateClock, 1000); 
+        calculateDday();                
 
     </script>
 </body>

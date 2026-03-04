@@ -124,3 +124,40 @@ button:hover {
     font-style: italic;            /* 살짝 기울임꼴로 느낌 살리기 */
     transition: 0.3s;
 }
+/* ========================================= */
+/* ⏰ 7일 차: 네온사인 시계와 D-Day 화장법 */
+/* ========================================= */
+
+/* 1. 실시간 시계 네온사인 효과 */
+#real-time-clock {
+    background-color: #1e272e; /* 힙한 다크 그레이 배경 */
+    color: #00d8d6;            /* 형광 민트색 글씨 */
+    display: inline-block;     /* 글씨 크기만큼만 배경색 칠하기 */
+    padding: 15px 30px;        /* 안쪽 여백 넉넉하게 */
+    border-radius: 12px;       /* 모서리 둥글게 */
+    
+    font-family: 'Courier New', Courier, monospace; /* 옛날 디지털 시계 느낌의 폰트! */
+    font-size: 40px !important; /* 글씨 큼지막하게 */
+    font-weight: bold;
+    
+    /* 🌟 여기가 네온사인 마법의 핵심! (글씨 주변으로 민트색 빛이 퍼지게) */
+    text-shadow: 0 0 10px #00d8d6, 0 0 20px #00d8d6; 
+    
+    margin: 10px 0;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2); /* 시계 박스 그림자 */
+    transition: 0.3s;
+}
+
+/* 시계에 마우스를 올렸을 때 더 밝게 빛나는 디테일! */
+#real-time-clock:hover {
+    transform: scale(1.05); /* 살짝 커짐 */
+    text-shadow: 0 0 15px #00d8d6, 0 0 30px #00d8d6, 0 0 40px #00d8d6; /* 빛이 2배로 뿜뿜! */
+}
+
+/* 2. D-Day 글씨도 살짝 빛나게! */
+#d-day-text {
+    color: #ff4757 !important; /* 코랄색으로 덮어쓰기 */
+    font-size: 22px !important;
+    text-shadow: 0 0 8px rgba(255, 71, 87, 0.4); /* 코랄색 네온 살짝 추가 */
+    margin-top: 10px;
+}
