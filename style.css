@@ -161,3 +161,30 @@ button:hover {
     text-shadow: 0 0 8px rgba(255, 71, 87, 0.4); /* 코랄색 네온 살짝 추가 */
     margin-top: 10px;
 }
+
+/* ========================================= */
+/* 🍅 8일 차: 뽀모도로 타이머 화장법 */
+/* ========================================= */
+
+#pomodoro-time {
+    background-color: #fff2e6; /* 아주 연한 토마토 주스 배경색 */
+    color: #ff4757;            /* 강렬한 토마토 레드 글씨 */
+    display: inline-block;
+    padding: 20px 40px;
+    border-radius: 20px;       /* 동글동글 귀여운 모서리 */
+    font-family: 'Courier New', Courier, monospace; 
+    font-size: 55px !important; /* 엄청나게 큰 글씨로 시선 집중! */
+    font-weight: 900;
+    letter-spacing: 5px;       /* 숫자 사이 간격을 살짝 벌려서 엣지있게 */
+    
+    /* 🌟 토마토빛 그림자로 입체감 주기 */
+    box-shadow: 0 8px 20px rgba(255, 71, 87, 0.2); 
+    margin: 15px 0;
+    transition: 0.3s;
+}
+
+/* 마우스 올리면 타이머가 통통 튀어오르는 디테일! */
+#pomodoro-time:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(255, 71, 87, 0.3);
+}

@@ -15,7 +15,6 @@
     </div>
 
     <hr>
-    
     <h2>1. 나의 목표</h2>
     <p>Git을 마스터하고 멋진 AI 증강 개발자가 되는 것입니다.</p>
 
@@ -23,11 +22,11 @@
     <h3>⏳ 시간은 금이다!</h3>
     <p id="real-time-clock" style="font-size: 30px; font-weight: bold; color: #333; margin: 5px 0;">00:00:00</p>
     <p id="d-day-text" style="font-size: 18px; color: #ff6b6b; font-weight: bold;">목표일까지: 계산 중...</p>
-    <hr>
     
+    <hr>
     <h2>2. 좋아하는 것</h2>
     <p>코딩, 운동, 그리고 치킨!</p>
-    
+
     <h2>3. 깃허브 주소</h2>
     <a href="https://github.com/aminadore79-gif">제 깃허브로 놀러오세요!</a>
 
@@ -36,18 +35,18 @@
     <ul>
         <a href="food.html" class="btn">🍗 내가 좋아하는 음식 보러가기</a>
     </ul>
-    
+
     <hr>
     <h3>🤖 앗, 잠깐만요!</h3>
     <button onclick="sayHello()">🤖 맞춤형 인사 받기</button>
     <button onclick="toggleDarkMode()">🌙 다크모드 스위치</button>
-    
+
     <hr>
     <h3>💡 오늘의 명언</h3>
     <p id="quote-text">명언을 가져오는 중입니다...</p>
     <p id="quote-author">-</p>
     <button onclick="getQuote()">🔄 새로운 명언 받기</button>
-    
+
     <hr>
     <h3>🌤️ 오늘의 날씨 (서울)</h3>
     <p id="weather-info">날씨 정보를 가져오는 중입니다...</p>
@@ -59,13 +58,19 @@
     <button onclick="getCat()">🐾 다른 고양이 보기</button>
 
     <hr>
+    <h3>🍅 집중력 부스터: 뽀모도로 타이머</h3>
+    <p id="pomodoro-time" style="font-size: 45px; font-weight: bold; color: #e15f41; margin: 10px 0;">25:00</p>
+    <button onclick="startTimer()">▶️ 시작</button>
+    <button onclick="pauseTimer()">⏸️ 일시정지</button>
+    <button onclick="resetTimer()">🔄 초기화</button>
+
+    <hr>
     <h3>📝 나의 할 일 목록</h3>
     <input type="text" id="todo-input" placeholder="오늘 할 일을 적어보세요!">
     <button onclick="addTask()">➕ 추가하기</button>
     <ul id="todo-list"></ul>
 
- <script>
-        // --- 기존 기능들 (인사, 다크모드, 명언, 날씨) ---
+    <script>
         function sayHello() {
             let savedName = localStorage.getItem("myGuestName");
             if (savedName) {
@@ -83,51 +88,36 @@
             }
         }
 
-        function toggleDarkMode() {
-            document.body.classList.toggle("dark-theme");
-        }
+        function toggleDarkMode() { document.body.classList.toggle("dark-theme"); }
 
         function getQuote() {
             fetch("https://korean-advice-open-api.vercel.app/api/advice")
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById("quote-text").innerText = '"' + data.message + '"';
-                document.getElementById("quote-author").innerText = "- " + data.author + " -";
-            })
-            .catch(error => {
-                document.getElementById("quote-text").innerText = "명언 실패! 😭";
-            });
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("quote-text").innerText = '"' + data.message + '"';
+                    document.getElementById("quote-author").innerText = "- " + data.author + " -";
+                })
+                .catch(error => { document.getElementById("quote-text").innerText = "명언 실패! 😭"; });
         }
 
         function getWeather() {
             fetch("https://api.open-meteo.com/v1/forecast?latitude=37.5665&longitude=126.9780&current_weather=true")
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById("weather-info").innerText = "현재 기온은 " + data.current_weather.temperature + "°C 입니다! 🌡️";
-            });
+                .then(response => response.json())
+                .then(data => { document.getElementById("weather-info").innerText = "현재 기온은 " + data.current_weather.temperature + "°C 입니다! 🌡️"; });
         }
 
-        // --- 🌟 무한 랜덤 고양이 사진 API ---
         function getCat() {
             fetch("https://api.thecatapi.com/v1/images/search")
-            .then(function(response) { return response.json(); })
-            .then(function(data) {
-                document.getElementById("cat-img").src = data[0].url;
-            });
+                .then(function (response) { return response.json(); })
+                .then(function (data) { document.getElementById("cat-img").src = data[0].url; });
         }
 
-        // --- 🌟 할 일 목록 (To-Do) ---
+        // --- 할 일 목록 ---
         let todos = [];
-
         function addTask() {
             let input = document.getElementById("todo-input");
             let taskText = input.value;
-
-            if (taskText === "") {
-                Swal.fire("앗!", "할 일을 먼저 적어주세요!", "warning");
-                return;
-            }
-
+            if (taskText === "") { Swal.fire("앗!", "할 일을 먼저 적어주세요!", "warning"); return; }
             let newTask = { text: taskText, isDone: false };
             todos.push(newTask);
             input.value = "";
@@ -147,30 +137,22 @@
             renderTasks();
         }
 
-        function saveTasks() {
-            localStorage.setItem("myTodos", JSON.stringify(todos));
-        }
+        function saveTasks() { localStorage.setItem("myTodos", JSON.stringify(todos)); }
 
         function renderTasks() {
             let list = document.getElementById("todo-list");
             list.innerHTML = "";
-
             for (let i = 0; i < todos.length; i++) {
                 let li = document.createElement("li");
-                
                 let span = document.createElement("span");
                 span.innerText = todos[i].text;
-                span.style.cursor = "pointer"; 
-                
-                if (todos[i].isDone === true) {
-                    span.classList.add("done-text");
-                }
-
-                span.onclick = function() { toggleDone(i); };
+                span.style.cursor = "pointer";
+                if (todos[i].isDone === true) { span.classList.add("done-text"); }
+                span.onclick = function () { toggleDone(i); };
 
                 let deleteBtn = document.createElement("button");
                 deleteBtn.innerText = "❌";
-                deleteBtn.onclick = function() { deleteTask(i); };
+                deleteBtn.onclick = function () { deleteTask(i); };
 
                 li.appendChild(span);
                 li.appendChild(deleteBtn);
@@ -185,53 +167,75 @@
                 if (parsedTodos.length > 0 && typeof parsedTodos[0] === "string") {
                     todos = [];
                     localStorage.removeItem("myTodos");
-                } else {
-                    todos = parsedTodos;
-                }
+                } else { todos = parsedTodos; }
                 renderTasks();
             }
         }
 
-        // =========================================
-        // ⏰ 7일 차: 시간과 D-Day 마법 시작!
-        // =========================================
-
+        // --- ⏰ 7일 차: 시간과 D-Day ---
         function updateClock() {
-            let now = new Date(); 
+            let now = new Date();
             let hours = String(now.getHours()).padStart(2, '0');
             let minutes = String(now.getMinutes()).padStart(2, '0');
             let seconds = String(now.getSeconds()).padStart(2, '0');
-            
             document.getElementById("real-time-clock").innerText = hours + ":" + minutes + ":" + seconds;
         }
 
         function calculateDday() {
             let currentYear = new Date().getFullYear();
-            let targetDate = new Date(currentYear + "-12-31"); 
+            let targetDate = new Date(currentYear + "-12-31");
             let today = new Date();
-
             let difference = targetDate.getTime() - today.getTime();
-            let daysLeft = Math.ceil(difference / (1000 * 60 * 60 * 24)); 
+            let daysLeft = Math.ceil(difference / (1000 * 60 * 60 * 24));
             
-            if (daysLeft > 0) {
-                document.getElementById("d-day-text").innerText = "올해의 끝까지 D-" + daysLeft + " 🚀";
-            } else if (daysLeft === 0) {
-                document.getElementById("d-day-text").innerText = "D-Day! 목표 달성일입니다! 🎉";
-            } else {
-                document.getElementById("d-day-text").innerText = "목표일이 지났습니다! 새로운 목표를 세워볼까요? 🌟";
-            }
+            if (daysLeft > 0) { document.getElementById("d-day-text").innerText = "올해의 끝까지 D-" + daysLeft + " 🚀"; } 
+            else if (daysLeft === 0) { document.getElementById("d-day-text").innerText = "D-Day! 목표 달성일입니다! 🎉"; } 
+            else { document.getElementById("d-day-text").innerText = "목표일이 지났습니다! 새로운 목표를 세워볼까요? 🌟"; }
         }
 
-        // --- 🚀 웹사이트가 켜질 때 자동으로 실행할 명령들 모음 --- 
-        getQuote();   // 명언
-        getWeather(); // 날씨
-        getCat();     // 고양이 사진
-        loadTasks();  // 할 일 목록
-        
-        // 시간 마법 실행!
-        updateClock();                  
-        setInterval(updateClock, 1000); 
-        calculateDday();                
+        // --- 🍅 8일 차: 뽀모도로 타이머 JS ---
+        let timeLeft = 25 * 60; 
+        let timerInterval;
+
+        function updateTimerDisplay() {
+            let minutes = String(Math.floor(timeLeft / 60)).padStart(2, '0');
+            let seconds = String(timeLeft % 60).padStart(2, '0');
+            document.getElementById("pomodoro-time").innerText = minutes + ":" + seconds;
+        }
+
+        function startTimer() {
+            if (timerInterval) return; 
+            timerInterval = setInterval(function () {
+                if (timeLeft > 0) {
+                    timeLeft--; 
+                    updateTimerDisplay(); 
+                } else {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                    Swal.fire("수고하셨습니다!", "25분 집중 완료! 5분간 푹 쉬세요 ☕", "success");
+                }
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            clearInterval(timerInterval); 
+            timerInterval = null;
+        }
+
+        function resetTimer() {
+            pauseTimer();
+            timeLeft = 25 * 60;
+            updateTimerDisplay();
+        }
+
+        // --- 🚀 웹사이트가 켜질 때 자동으로 실행할 명령들 --- 
+        getQuote();   
+        getWeather(); 
+        getCat();     
+        loadTasks();  
+        updateClock();
+        setInterval(updateClock, 1000);
+        calculateDday();
 
     </script>
 </body>
