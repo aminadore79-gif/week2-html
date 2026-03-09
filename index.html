@@ -5,12 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>최종 복습 페이지</title>
-    
+
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             if (localStorage.getItem("myDarkMode") === "on") {
                 document.body.classList.add("dark-theme");
             }
@@ -75,10 +75,9 @@
     <h3>🤖 앗, 잠깐만요!</h3>
     <button onclick="sayHello()">🤖 맞춤형 인사 받기</button>
     <button onclick="toggleDarkMode()">🌙 다크모드 스위치</button>
-    <button onclick="fireConfetti()" style="background-color: #9b59b6;">🎊 대망의 피날레 (폭죽 발사!)</button>
+   <button onclick="fireConfetti()" style="background-color: #9b59b6;">🎊 대망의 피날레 (폭죽 발사!)</button>
     <hr>
 
-    <hr>
     <h3>💡 오늘의 명언</h3>
     <p id="quote-text">명언을 가져오는 중입니다...</p>
     <p id="quote-author">-</p>
@@ -143,8 +142,8 @@
             }
         }
 
-       function toggleDarkMode() { 
-            document.body.classList.toggle("dark-theme"); 
+        function toggleDarkMode() {
+            document.body.classList.toggle("dark-theme");
             // 🌟 껐다 켤 때마다 내장 메모리에 현재 상태 적어두기!
             if (document.body.classList.contains("dark-theme")) {
                 localStorage.setItem("myDarkMode", "on");
@@ -314,7 +313,7 @@
         function toggleChat() {
             let chatBox = document.getElementById("chat-box");
             let chatToggle = document.getElementById("chat-toggle");
-            
+
             if (chatBox.classList.contains("hidden")) {
                 chatBox.classList.remove("hidden");
                 chatToggle.style.display = "none";
@@ -344,7 +343,7 @@
             inputField.value = "";
             chatContent.scrollTop = chatContent.scrollHeight;
 
-            setTimeout(function() {
+            setTimeout(function () {
                 let aiDiv = document.createElement("div");
                 aiDiv.className = "ai-msg";
 
