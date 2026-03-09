@@ -1,0 +1,119 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Guestbook - 방명록</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <header class="portfolio-header">
+        <div class="logo">🚀 My Portfolio</div>
+        <nav class="pc-menu">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="guestbook.html">Guestbook</a></li>
+            </ul>
+        </nav>
+        <div class="hamburger" onclick="toggleMenu()">🍔</div>
+    </header>
+
+    <div class="mobile-menu" id="mobile-menu">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="guestbook.html">Guestbook</a></li>
+        </ul>
+    </div>
+
+    <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+        <h2 style="text-align: center; color: #2c3e50;">📝 방문자 방명록</h2>
+        <p style="text-align: center; color: #7f8c8d;">(현재는 내 PC에만 저장되는 임시 모드입니다! ☁️)</p>
+        
+        <div style="background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <input type="text" id="gb-name" placeholder="이름 (닉네임)" style="width: 100%; box-sizing: border-box; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc; font-size: 16px;">
+            <textarea id="gb-message" placeholder="여기에 따뜻한 방명록을 남겨주세요!" rows="4" style="width: 100%; box-sizing: border-box; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc; font-size: 16px;"></textarea>
+            <button onclick="addGuestbook()" style="width: 100%; background-color: #27ae60; font-size: 18px;">✍️ 방명록 남기기</button>
+        </div>
+
+        <hr style="margin: 30px 0;">
+
+        <div id="guestbook-list">
+            </div>
+    </div>
+
+    <script>
+        let guestbookData = [];
+
+        // 1. 저장된 방명록 불러오기
+        function loadGuestbook() {
+            let savedData = localStorage.getItem("myGuestbook");
+            if (savedData) {
+                guestbookData = JSON.parse(savedData);
+                renderGuestbook();
+            }
+        }
+
+        // 2. 방명록 추가하기
+        function addGuestbook() {
+            let nameInput = document.getElementById("gb-name").value;
+            let msgInput = document.getElementById("gb-message").value;
+
+            if(nameInput === "" || msgInput === "") {
+                Swal.fire("앗!", "이름과 내용을 모두 적어주세요!", "warning");
+                return;
+            }
+
+            // 작성 시간 기록하기
+            let now = new Date();
+            let timeString = now.getFullYear() + "-" + (now.getMonth()+1) + "-" + now.getDate() + " " + now.getHours() + ":" + String(now.getMinutes()).padStart(2, '0');
+
+            let newEntry = {
+                name: nameInput,
+                message: msgInput,
+                date: timeString
+            };
+
+            guestbookData.push(newEntry);
+            localStorage.setItem("myGuestbook", JSON.stringify(guestbookData)); // 내장 메모리에 저장!
+            
+            // 입력창 비우기
+            document.getElementById("gb-name").value = "";
+            document.getElementById("gb-message").value = "";
+            
+            renderGuestbook();
+            Swal.fire("성공!", "방명록이 등록되었습니다! 🎉", "success");
+        }
+
+        // 3. 화면에 방명록 카드 그려주기
+        function renderGuestbook() {
+            let list = document.getElementById("guestbook-list");
+            list.innerHTML = "";
+            
+            // 최신 글이 위로 오도록 뒤에서부터 반복문 돌리기
+            for (let i = guestbookData.length - 1; i >= 0; i--) {
+                let entry = guestbookData[i];
+                let card = document.createElement("div");
+                card.className = "gb-card"; // CSS 화장품 이름표 붙여주기
+                card.innerHTML = `
+                    <h4 style="margin: 0 0 10px 0; color: #2c3e50;">👤 ${entry.name} <span style="font-size: 12px; color: #999; font-weight: normal;">${entry.date}</span></h4>
+                    <p style="margin: 0; color: #333; line-height: 1.5;">${entry.message}</p>
+                `;
+                list.appendChild(card);
+            }
+        }
+
+        function toggleMenu() {
+            let menu = document.getElementById("mobile-menu");
+            menu.classList.toggle("active");
+        }
+
+        // 웹사이트 켜지면 불러오기
+        loadGuestbook();
+    </script>
+</body>
+</html>

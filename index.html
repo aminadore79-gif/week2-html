@@ -10,6 +10,28 @@
 </head>
 
 <body>
+    <header class="portfolio-header">
+        <div class="logo">🚀 My Portfolio</div>
+        <nav class="pc-menu">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="guestbook.html">Guestbook</a></li>
+            </ul>
+        </nav>
+        <div class="hamburger" onclick="toggleMenu()">🍔</div>
+    </header>
+
+    <div class="mobile-menu" id="mobile-menu">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="guestbook.html">Guestbook</a></li>
+        </ul>
+    </div>
+
     <h1 id="main-title">안녕하세요! aminadore79-gif입니다. 👋</h1>
     <hr>
 
@@ -77,6 +99,23 @@
     <button onclick="addTask()">➕ 추가하기</button>
     <ul id="todo-list"></ul>
 
+    <div id="chat-widget" class="chat-widget">
+        <button id="chat-toggle" onclick="toggleChat()">💬 AI 비서</button>
+        <div id="chat-box" class="chat-box hidden">
+            <div class="chat-header">
+                🤖 내 포트폴리오 AI
+                <button onclick="toggleChat()" style="font-size:16px;">✖</button>
+            </div>
+            <div id="chat-content" class="chat-content">
+                <div class="ai-msg">안녕하세요! 저는 이 포트폴리오의 AI 비서입니다. 무엇이 궁금하신가요? (예: 기술, 목표, 연락처)</div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="chat-input" placeholder="질문을 입력하세요..." onkeypress="handleChatEnter(event)">
+                <button onclick="sendChatMessage()">전송</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         function sayHello() {
             let savedName = localStorage.getItem("myGuestName");
@@ -119,7 +158,6 @@
                 .then(function (data) { document.getElementById("cat-img").src = data[0].url; });
         }
 
-        // --- 할 일 목록 ---
         let todos = [];
         function addTask() {
             let input = document.getElementById("todo-input");
@@ -179,7 +217,6 @@
             }
         }
 
-        // --- ⏰ 7일 차: 시간과 D-Day ---
         function updateClock() {
             let now = new Date();
             let hours = String(now.getHours()).padStart(2, '0');
@@ -200,13 +237,8 @@
             else { document.getElementById("d-day-text").innerText = "목표일이 지났습니다! 새로운 목표를 세워볼까요? 🌟"; }
         }
 
-        // --- 🍅 9일 차: 알람 소리가 추가된 뽀모도로 타이머 JS ---
-
-        // 1. 테스트를 위해 임시로 3초만 설정해 둡니다! (원래는 25 * 60)
         let timeLeft = 25 * 60;
         let timerInterval;
-
-        // 🎵 구글 무료 효과음 저장소에서 알람 소리 배달시키기!
         let alarmSound = new Audio("https://actions.google.com/sounds/v1/alarms/beep_short.ogg");
 
         function updateTimerDisplay() {
@@ -224,10 +256,7 @@
                 } else {
                     clearInterval(timerInterval);
                     timerInterval = null;
-
-                    // 🌟 대망의 알람 재생 마법! (0초가 되면 삐비빅!)
                     alarmSound.play();
-
                     Swal.fire("수고하셨습니다!", "집중 완료! 5분간 푹 쉬세요 ☕", "success");
                 }
             }, 1000);
@@ -240,23 +269,16 @@
 
         function resetTimer() {
             pauseTimer();
-            // 🔄 초기화할 때도 3초로 맞춰둡니다. (테스트 끝나면 25 * 60으로 바꿀 거예요!)
             timeLeft = 25 * 60;
             updateTimerDisplay();
         }
 
-        // =========================================
-        // 🎉 10일 차: 대망의 폭죽 축제 마법!
-        // =========================================
         function fireConfetti() {
-            // 폭죽 도구를 작동시키는 마법의 주문!
             confetti({
-                particleCount: 150, // 폭죽 조각 개수 (더 많게 해도 됩니다!)
-                spread: 80,         // 퍼지는 각도
-                origin: { y: 0.6 }  // 화면의 어느 높이에서 터질지 (아래쪽에서 위로 팡!)
+                particleCount: 150,
+                spread: 80,
+                origin: { y: 0.6 }
             });
-
-            // 덤으로 축하 팝업까지!
             Swal.fire(
                 "10일 완성 대성공! 🏆",
                 "여기까지 오신 수강생님, 진심으로 최고입니다! 자랑스러운 나만의 웹사이트 완성!!",
@@ -264,7 +286,68 @@
             );
         }
 
-        // --- 🚀 웹사이트가 켜질 때 자동으로 실행할 명령들 --- 
+        function toggleMenu() {
+            let menu = document.getElementById("mobile-menu");
+            menu.classList.toggle("active");
+        }
+
+        // =========================================
+        // 🤖 AI 챗봇 두뇌 (포트폴리오 맞춤형!)
+        // =========================================
+        function toggleChat() {
+            let chatBox = document.getElementById("chat-box");
+            let chatToggle = document.getElementById("chat-toggle");
+            
+            if (chatBox.classList.contains("hidden")) {
+                chatBox.classList.remove("hidden");
+                chatToggle.style.display = "none";
+            } else {
+                chatBox.classList.add("hidden");
+                chatToggle.style.display = "block";
+            }
+        }
+
+        function handleChatEnter(event) {
+            if (event.key === "Enter") {
+                sendChatMessage();
+            }
+        }
+
+        function sendChatMessage() {
+            let inputField = document.getElementById("chat-input");
+            let message = inputField.value.trim();
+            if (message === "") return;
+
+            let chatContent = document.getElementById("chat-content");
+
+            let userDiv = document.createElement("div");
+            userDiv.className = "user-msg";
+            userDiv.innerText = message;
+            chatContent.appendChild(userDiv);
+            inputField.value = "";
+            chatContent.scrollTop = chatContent.scrollHeight;
+
+            setTimeout(function() {
+                let aiDiv = document.createElement("div");
+                aiDiv.className = "ai-msg";
+
+                if (message.includes("안녕")) {
+                    aiDiv.innerText = "안녕하세요! 반갑습니다. 저는 이 포트폴리오를 안내하는 AI입니다! 👋";
+                } else if (message.includes("기술") || message.includes("할 줄")) {
+                    aiDiv.innerText = "이 개발자님은 HTML, CSS, JavaScript를 마스터했고, 지금은 AI 챗봇과 클라우드까지 섭렵하고 있습니다! 💻🔥";
+                } else if (message.includes("목표")) {
+                    aiDiv.innerText = "멋진 AI 증강 풀스택 개발자가 되는 것이 목표라고 들었습니다! 🚀";
+                } else if (message.includes("연락") || message.includes("이메일")) {
+                    aiDiv.innerText = "이메일 aminadore79@gmail.com 으로 연락주시면 가장 빠릅니다! 📧";
+                } else {
+                    aiDiv.innerText = "앗, 그 질문은 아직 제가 배우지 못했습니다! 😅 '기술', '목표', '연락' 같은 단어로 다시 물어봐주시겠어요?";
+                }
+
+                chatContent.appendChild(aiDiv);
+                chatContent.scrollTop = chatContent.scrollHeight;
+            }, 1000);
+        }
+
         getQuote();
         getWeather();
         getCat();
