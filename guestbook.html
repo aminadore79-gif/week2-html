@@ -8,6 +8,13 @@
     <title>Guestbook - 방명록</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (localStorage.getItem("myDarkMode") === "on") {
+                document.body.classList.add("dark-theme");
+            }
+        });
+    </script>
 </head>
 
 <body>

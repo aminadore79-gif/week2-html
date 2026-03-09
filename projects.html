@@ -6,6 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projects - 내 작품 전시관</title>
     <link rel="stylesheet" href="style.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (localStorage.getItem("myDarkMode") === "on") {
+                document.body.classList.add("dark-theme");
+            }
+        });
+    </script>
 </head>
 
 <body>

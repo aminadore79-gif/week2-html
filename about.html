@@ -6,6 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Me - 내 소개</title>
     <link rel="stylesheet" href="style.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (localStorage.getItem("myDarkMode") === "on") {
+                document.body.classList.add("dark-theme");
+            }
+        });
+    </script>
 </head>
 
 <body>
@@ -38,6 +45,14 @@
             지금은 반응형 포트폴리오를 만들고 있는 엄청난 성장판의 소유자죠. 😎
         </p>
         <img src="cat.jpg" alt="내 사진" style="max-width: 400px; width: 100%; margin-top: 30px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
+        <hr style="margin: 40px 0; border: 1px solid #eee;">
+        <h2 style="color: #2c3e50; font-size: 28px;">📊 나의 스킬 게이지</h2>
+        <div class="skill-container">
+            <div class="skill-bar"><div class="skill-level html-level">HTML 90%</div></div>
+            <div class="skill-bar"><div class="skill-level css-level">CSS 80%</div></div>
+            <div class="skill-bar"><div class="skill-level js-level">JS 70%</div></div>
+            <div class="skill-bar"><div class="skill-level git-level">Git & GitHub 85%</div></div>
+        </div>
     </div>
 
     <script>
