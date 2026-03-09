@@ -480,3 +480,43 @@ button:hover {
     cursor: pointer;
 }
 
+/* ========================================= */
+/* 🎨 넷플릭스 스타일 프로젝트 갤러리 */
+/* ========================================= */
+.project-gallery {
+    display: grid;
+    /* 🌟 마법의 주문: 카드가 화면 크기에 맞춰 알아서 줄바꿈되게 해줘! */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.project-card {
+    background-color: white;
+    border-radius: 15px;
+    overflow: hidden; /* 사진이 모서리 밖으로 삐져나오지 않게 숨기기 */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.project-card:hover {
+    transform: translateY(-10px); /* 마우스를 올리면 카드가 공중으로 붕~ 뜹니다! */
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+}
+
+.project-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover; /* 사진 비율 찌그러지지 않게 꽉 채우기 */
+}
+
+.project-card h3 {
+    margin: 15px;
+    color: #2c3e50;
+}
+
+.project-card p {
+    margin: 0 15px 20px 15px;
+    color: #7f8c8d;
+    line-height: 1.5;
+}
