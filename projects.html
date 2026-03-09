@@ -1,16 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projects - 내 작품 전시관</title>
     <link rel="stylesheet" href="style.css">
+    
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        // 1. 초기 실행 로직 (다크모드 & 스크롤 감시)
+        document.addEventListener("DOMContentLoaded", function () {
+            // 다크모드 설정 기억
             if (localStorage.getItem("myDarkMode") === "on") {
                 document.body.classList.add("dark-theme");
             }
+
+            // ✨ 스크롤 감시자 (Intersection Observer)
+            const observerOptions = {
+                threshold: 0.1 
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active'); 
+                    }
+                });
+            }, observerOptions);
+
+            // 'reveal' 클래스가 붙은 모든 요소를 찾아 감시 시작
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
         });
     </script>
 </head>
@@ -39,29 +58,34 @@
     </div>
 
     <div style="max-width: 1000px; margin: 0 auto; padding: 20px;">
-        <h2 style="text-align: center; color: #2c3e50; font-size: 32px;">🎨 나의 마스터피스</h2>
-        <p style="text-align: center; color: #7f8c8d; margin-bottom: 40px;">단 10일 만에 만들어낸 엄청난 결과물들입니다!</p>
+        <div class="reveal">
+            <h2 style="text-align: center; color: #2c3e50; font-size: 32px; margin-top: 40px;">🎨 나의 마스터피스</h2>
+            <p style="text-align: center; color: #7f8c8d; margin-bottom: 40px;">단 10일 만에 만들어낸 엄청난 결과물들입니다!</p>
+        </div>
 
         <div class="project-gallery">
-            <div class="project-card">
+            <div class="project-card reveal">
                 <img src="cat.jpg" alt="뽀모도로">
                 <h3>🍅 집중력 부스터 타이머</h3>
                 <p>JS setInterval을 활용한 25분 집중 뽀모도로 타이머. 실제 구글 효과음을 연동한 알람 기능 탑재!</p>
             </div>
 
-            <div class="project-card">
+            <div class="project-card reveal">
                 <img src="cat.jpg" alt="방명록">
                 <h3>📝 실시간 방명록 (임시)</h3>
                 <p>프론트엔드 상태 관리(localStorage)를 활용하여 화면 전환 없이 실시간으로 렌더링되는 방명록 게시판.</p>
             </div>
 
-            <div class="project-card">
+            <div class="project-card reveal">
                 <img src="cat.jpg" alt="챗봇">
                 <h3>🤖 나만의 AI 비서</h3>
                 <p>DOM 제어와 setTimeout 비동기 처리를 활용하여 구현한 포트폴리오 맞춤형 인공지능 챗봇 위젯.</p>
             </div>
         </div>
-    </div> <script>
+    </div>
+
+    <script>
+        // 메뉴 토글 함수
         function toggleMenu() {
             let menu = document.getElementById("mobile-menu");
             menu.classList.toggle("active");

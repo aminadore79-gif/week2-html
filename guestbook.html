@@ -1,18 +1,37 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 
-    <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guestbook - 방명록</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        // 전역 감시자 변수 선언
+        let observer;
+
         document.addEventListener("DOMContentLoaded", function() {
+            // 1. 다크모드 설정 기억
             if (localStorage.getItem("myDarkMode") === "on") {
                 document.body.classList.add("dark-theme");
             }
+
+            // 2. ✨ 스크롤 감시자 설정
+            const observerOptions = { threshold: 0.1 };
+            observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, observerOptions);
+
+            // 초기 정적 요소 감시 시작
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+            
+            // 웹사이트 켜지면 저장된 데이터 불러오기
+            loadGuestbook();
         });
     </script>
 </head>
@@ -41,25 +60,25 @@
     </div>
 
     <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
-        <h2 style="text-align: center; color: #2c3e50;">📝 방문자 방명록</h2>
-        <p style="text-align: center; color: #7f8c8d;">(현재는 내 PC에만 저장되는 임시 모드입니다! ☁️)</p>
+        <div class="reveal">
+            <h2 style="text-align: center; color: #2c3e50; margin-top: 40px;">📝 방문자 방명록</h2>
+            <p style="text-align: center; color: #7f8c8d;">(현재는 내 PC에만 저장되는 임시 모드입니다! ☁️)</p>
+        </div>
         
-        <div style="background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        <div class="reveal" style="background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-top: 20px;">
             <input type="text" id="gb-name" placeholder="이름 (닉네임)" style="width: 100%; box-sizing: border-box; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc; font-size: 16px;">
             <textarea id="gb-message" placeholder="여기에 따뜻한 방명록을 남겨주세요!" rows="4" style="width: 100%; box-sizing: border-box; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc; font-size: 16px;"></textarea>
-            <button onclick="addGuestbook()" style="width: 100%; background-color: #27ae60; font-size: 18px;">✍️ 방명록 남기기</button>
+            <button onclick="addGuestbook()" style="width: 100%; background-color: #27ae60; font-size: 18px; color: white; border: none; padding: 12px; border-radius: 5px; cursor: pointer;">✍️ 방명록 남기기</button>
         </div>
 
-        <hr style="margin: 30px 0;">
+        <hr style="margin: 30px 0;" class="reveal">
 
-        <div id="guestbook-list">
-            </div>
+        <div id="guestbook-list"></div>
     </div>
 
     <script>
         let guestbookData = [];
 
-        // 1. 저장된 방명록 불러오기
         function loadGuestbook() {
             let savedData = localStorage.getItem("myGuestbook");
             if (savedData) {
@@ -68,7 +87,6 @@
             }
         }
 
-        // 2. 방명록 추가하기
         function addGuestbook() {
             let nameInput = document.getElementById("gb-name").value;
             let msgInput = document.getElementById("gb-message").value;
@@ -78,20 +96,13 @@
                 return;
             }
 
-            // 작성 시간 기록하기
             let now = new Date();
             let timeString = now.getFullYear() + "-" + (now.getMonth()+1) + "-" + now.getDate() + " " + now.getHours() + ":" + String(now.getMinutes()).padStart(2, '0');
 
-            let newEntry = {
-                name: nameInput,
-                message: msgInput,
-                date: timeString
-            };
-
+            let newEntry = { name: nameInput, message: msgInput, date: timeString };
             guestbookData.push(newEntry);
-            localStorage.setItem("myGuestbook", JSON.stringify(guestbookData)); // 내장 메모리에 저장!
+            localStorage.setItem("myGuestbook", JSON.stringify(guestbookData));
             
-            // 입력창 비우기
             document.getElementById("gb-name").value = "";
             document.getElementById("gb-message").value = "";
             
@@ -99,31 +110,58 @@
             Swal.fire("성공!", "방명록이 등록되었습니다! 🎉", "success");
         }
 
-        // 3. 화면에 방명록 카드 그려주기
         function renderGuestbook() {
             let list = document.getElementById("guestbook-list");
+            let currentName = document.getElementById("gb-name").value;
             list.innerHTML = "";
             
-            // 최신 글이 위로 오도록 뒤에서부터 반복문 돌리기
             for (let i = guestbookData.length - 1; i >= 0; i--) {
                 let entry = guestbookData[i];
                 let card = document.createElement("div");
-                card.className = "gb-card"; // CSS 화장품 이름표 붙여주기
+                // 🌟 새 카드에 reveal 클래스 부여
+                card.className = "gb-card reveal";
+                
+                let deleteBtn = "";
+                if (currentName === "관리자") {
+                    deleteBtn = `<button onclick="deleteEntry(${i})" style="float:right; background-color:#ff6b6b; color:white; border:none; padding:5px 10px; border-radius:3px; cursor:pointer; font-size:12px;">삭제</button>`;
+                }
+
                 card.innerHTML = `
+                    ${deleteBtn}
                     <h4 style="margin: 0 0 10px 0; color: #2c3e50;">👤 ${entry.name} <span style="font-size: 12px; color: #999; font-weight: normal;">${entry.date}</span></h4>
                     <p style="margin: 0; color: #333; line-height: 1.5;">${entry.message}</p>
                 `;
                 list.appendChild(card);
+                
+                // 🌟 새로 생성된 카드를 감시 대상에 등록
+                if(observer) observer.observe(card);
             }
         }
 
-        function toggleMenu() {
-            let menu = document.getElementById("mobile-menu");
-            menu.classList.toggle("active");
+        function deleteEntry(index) {
+            Swal.fire({
+                title: '정말 삭제할까요?',
+                text: "삭제된 글은 복구할 수 없습니다!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '네, 삭제합니다!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    guestbookData.splice(index, 1);
+                    localStorage.setItem("myGuestbook", JSON.stringify(guestbookData));
+                    renderGuestbook();
+                    Swal.fire('삭제 완료!', '방명록 글이 삭제되었습니다.', 'success');
+                }
+            })
         }
 
-        // 웹사이트 켜지면 불러오기
-        loadGuestbook();
+        document.getElementById("gb-name").addEventListener("input", renderGuestbook);
+
+        function toggleMenu() {
+            document.getElementById("mobile-menu").classList.toggle("active");
+        }
     </script>
 </body>
 </html>

@@ -559,3 +559,21 @@ button:hover {
     from { width: 0; }
     to { width: var(--target-width); }
 }
+
+/* ========================================= */
+/* ✨ 스크롤 애니메이션 스타일 */
+/* ========================================= */
+
+/* 1. 처음엔 투명하고 살짝 아래(20px)에 위치하게 합니다. */
+.reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s ease-out; /* 0.8초 동안 부드럽게! */
+}
+
+/* 2. 'active' 클래스가 붙으면 선명해지고 제자리로 돌아옵니다. */
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+

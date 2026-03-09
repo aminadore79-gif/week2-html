@@ -1,19 +1,38 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>최종 복습 페이지</title>
+    <title>최종 복습 페이지 - 포트폴리오</title>
 
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
     <script>
+        // 1. 초기 실행 로직 (다크모드 & 스크롤 감시)
         document.addEventListener("DOMContentLoaded", function () {
+            // 다크모드 설정 기억
             if (localStorage.getItem("myDarkMode") === "on") {
                 document.body.classList.add("dark-theme");
             }
+
+            // ✨ 스크롤 감시자 (Intersection Observer)
+            const observerOptions = {
+                threshold: 0.1 
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active'); 
+                    }
+                });
+            }, observerOptions);
+
+            // 'reveal' 클래스가 붙은 모든 요소를 찾아 감시 시작
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
         });
     </script>
 </head>
@@ -41,81 +60,101 @@
         </ul>
     </div>
 
-    <h1 id="main-title">안녕하세요! aminadore79-gif입니다. 👋</h1>
-    <hr>
-
-    <div style="text-align: center; margin: 20px 0;">
-        <img src="cat.jpg" alt="대문 고양이"
-            style="max-width: 300px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+    <div class="reveal" style="text-align: center; padding-top: 50px;">
+        <h1 id="main-title">안녕하세요! aminadore79-gif입니다. 👋</h1>
+        <hr>
+        <div style="margin: 20px 0;">
+            <img src="cat.jpg" alt="대문 고양이"
+                style="max-width: 300px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+        </div>
     </div>
 
-    <hr>
-    <h2>1. 나의 목표</h2>
-    <p>Git을 마스터하고 멋진 AI 증강 개발자가 되는 것입니다.</p>
+    <div class="reveal">
+        <hr>
+        <h2>1. 나의 목표</h2>
+        <p>Git을 마스터하고 멋진 AI 증강 개발자가 되는 것입니다.</p>
+    </div>
 
-    <hr>
-    <h3>⏳ 시간은 금이다!</h3>
-    <p id="real-time-clock" style="font-size: 30px; font-weight: bold; color: #333; margin: 5px 0;">00:00:00</p>
-    <p id="d-day-text" style="font-size: 18px; color: #ff6b6b; font-weight: bold;">목표일까지: 계산 중...</p>
+    <div class="reveal">
+        <hr>
+        <h3>⏳ 시간은 금이다!</h3>
+        <p id="real-time-clock" style="font-size: 30px; font-weight: bold; color: #333; margin: 5px 0;">00:00:00</p>
+        <p id="d-day-text" style="font-size: 18px; color: #ff6b6b; font-weight: bold;">목표일까지: 계산 중...</p>
+    </div>
 
-    <hr>
-    <h2>2. 좋아하는 것</h2>
-    <p>코딩, 운동, 그리고 치킨!</p>
+    <div class="reveal">
+        <hr>
+        <h2>2. 좋아하는 것</h2>
+        <p>코딩, 운동, 그리고 치킨!</p>
+        <h2>3. 깃허브 주소</h2>
+        <a href="https://github.com/aminadore79-gif" target="_blank">제 깃허브로 놀러오세요!</a>
+    </div>
 
-    <h2>3. 깃허브 주소</h2>
-    <a href="https://github.com/aminadore79-gif">제 깃허브로 놀러오세요!</a>
+    <div class="reveal">
+        <hr>
+        <h2>📂 내 최애 메뉴</h2>
+        <ul>
+            <a href="food.html" class="btn">🍗 내가 좋아하는 음식 보러가기</a>
+        </ul>
+    </div>
 
-    <hr>
-    <h2>📂 내 최애 메뉴</h2>
-    <ul>
-        <a href="food.html" class="btn">🍗 내가 좋아하는 음식 보러가기</a>
-    </ul>
+    <div class="reveal">
+        <hr>
+        <h3>🤖 앗, 잠깐만요!</h3>
+        <button onclick="sayHello()">🤖 맞춤형 인사 받기</button>
+        <button onclick="toggleDarkMode()">🌙 다크모드 스위치</button>
+        <button onclick="fireConfetti()" style="background-color: #9b59b6;">🎊 대망의 피날레 (폭죽 발사!)</button>
+    </div>
 
-    <hr>
-    <h3>🤖 앗, 잠깐만요!</h3>
-    <button onclick="sayHello()">🤖 맞춤형 인사 받기</button>
-    <button onclick="toggleDarkMode()">🌙 다크모드 스위치</button>
-   <button onclick="fireConfetti()" style="background-color: #9b59b6;">🎊 대망의 피날레 (폭죽 발사!)</button>
-    <hr>
+    <div class="reveal">
+        <hr>
+        <h3>💡 오늘의 명언</h3>
+        <p id="quote-text">명언을 가져오는 중입니다...</p>
+        <p id="quote-author">-</p>
+        <button onclick="getQuote()">🔄 새로운 명언 받기</button>
+    </div>
 
-    <h3>💡 오늘의 명언</h3>
-    <p id="quote-text">명언을 가져오는 중입니다...</p>
-    <p id="quote-author">-</p>
-    <button onclick="getQuote()">🔄 새로운 명언 받기</button>
+    <div class="reveal">
+        <hr>
+        <h3>🌤️ 오늘의 날씨 (서울)</h3>
+        <p id="weather-info">날씨 정보를 가져오는 중입니다...</p>
+    </div>
 
-    <hr>
-    <h3>🌤️ 오늘의 날씨 (서울)</h3>
-    <p id="weather-info">날씨 정보를 가져오는 중입니다...</p>
+    <div class="reveal">
+        <hr>
+        <h3>🐱 무한 랜덤 고양이 사진</h3>
+        <img id="cat-img" src="https://via.placeholder.com/300?text=Cat+Loading..." alt="귀여운 고양이"
+            style="max-width: 300px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-bottom: 10px;">
+        <br>
+        <button onclick="getCat()">🐾 다른 고양이 보기</button>
+    </div>
 
-    <hr>
-    <h3>🐱 무한 랜덤 고양이 사진</h3>
-    <img id="cat-img" src="https://via.placeholder.com/300?text=Cat+Loading..." alt="귀여운 고양이"
-        style="max-width: 300px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-bottom: 10px;">
-    <br>
-    <button onclick="getCat()">🐾 다른 고양이 보기</button>
+    <div class="reveal">
+        <hr>
+        <h3>🍅 집중력 부스터: 뽀모도로 타이머</h3>
+        <p id="pomodoro-time" style="font-size: 45px; font-weight: bold; color: #e15f41; margin: 10px 0;">25:00</p>
+        <button onclick="startTimer()">▶️ 시작</button>
+        <button onclick="pauseTimer()">⏸️ 일시정지</button>
+        <button onclick="resetTimer()">🔄 초기화</button>
+    </div>
 
-    <hr>
-    <h3>🍅 집중력 부스터: 뽀모도로 타이머</h3>
-    <p id="pomodoro-time" style="font-size: 45px; font-weight: bold; color: #e15f41; margin: 10px 0;">25:00</p>
-    <button onclick="startTimer()">▶️ 시작</button>
-    <button onclick="pauseTimer()">⏸️ 일시정지</button>
-    <button onclick="resetTimer()">🔄 초기화</button>
-
-    <hr>
-    <h3>📝 나의 할 일 목록</h3>
-    <input type="text" id="todo-input" placeholder="오늘 할 일을 적어보세요!">
-    <button onclick="addTask()">➕ 추가하기</button>
-    <ul id="todo-list"></ul>
+    <div class="reveal">
+        <hr>
+        <h3>📝 나의 할 일 목록</h3>
+        <input type="text" id="todo-input" placeholder="오늘 할 일을 적어보세요!">
+        <button onclick="addTask()">➕ 추가하기</button>
+        <ul id="todo-list"></ul>
+    </div>
 
     <div id="chat-widget" class="chat-widget">
         <button id="chat-toggle" onclick="toggleChat()">💬 AI 비서</button>
         <div id="chat-box" class="chat-box hidden">
             <div class="chat-header">
                 🤖 내 포트폴리오 AI
-                <button onclick="toggleChat()" style="font-size:16px;">✖</button>
+                <button onclick="toggleChat()" style="font-size:16px; background:none; border:none; color:white; cursor:pointer;">✖</button>
             </div>
             <div id="chat-content" class="chat-content">
-                <div class="ai-msg">안녕하세요! 저는 이 포트폴리오의 AI 비서입니다. 무엇이 궁금하신가요? (예: 기술, 목표, 연락처)</div>
+                <div class="ai-msg">안녕하세요! 무엇이 궁금하신가요?</div>
             </div>
             <div class="chat-input-area">
                 <input type="text" id="chat-input" placeholder="질문을 입력하세요..." onkeypress="handleChatEnter(event)">
@@ -125,254 +164,181 @@
     </div>
 
     <script>
+        // -----------------------------------------
+        // 1. 유틸리티 및 인터랙션 함수들
+        // -----------------------------------------
         function sayHello() {
             let savedName = localStorage.getItem("myGuestName");
             if (savedName) {
-                Swal.fire(savedName + '님, 또 오셨군요!', '다시 뵙게 되어 반갑습니다! 🎉', 'info');
+                Swal.fire(savedName + '님, 또 오셨군요!', '반갑습니다! 🎉', 'info');
                 document.getElementById("main-title").innerText = "반가워요! " + savedName + "님 👋";
             } else {
-                let newName = prompt("방문자님의 이름(또는 별명)은 무엇인가요?");
-                if (newName != null && newName != "") {
+                let newName = prompt("방문자님의 이름은 무엇인가요?");
+                if (newName) {
                     localStorage.setItem("myGuestName", newName);
-                    Swal.fire(newName + '님, 환영합니다!', '이름을 제 수첩에 잘 적어두었습니다! 📝', 'success');
+                    Swal.fire(newName + '님, 환영합니다!', '📝 저장 완료!', 'success');
                     document.getElementById("main-title").innerText = "안녕하세요! " + newName + "님 👋";
-                } else {
-                    Swal.fire('환영합니다!', '제 웹사이트에 오신 것을 환영합니다! 🎉', 'success');
                 }
             }
         }
 
         function toggleDarkMode() {
             document.body.classList.toggle("dark-theme");
-            // 🌟 껐다 켤 때마다 내장 메모리에 현재 상태 적어두기!
-            if (document.body.classList.contains("dark-theme")) {
-                localStorage.setItem("myDarkMode", "on");
-            } else {
-                localStorage.setItem("myDarkMode", "off");
-            }
+            localStorage.setItem("myDarkMode", document.body.classList.contains("dark-theme") ? "on" : "off");
         }
 
+        function toggleMenu() {
+            document.getElementById("mobile-menu").classList.toggle("active");
+        }
+
+        // -----------------------------------------
+        // 2. 외부 데이터 통신 (API)
+        // -----------------------------------------
         function getQuote() {
             fetch("https://korean-advice-open-api.vercel.app/api/advice")
-                .then(response => response.json())
+                .then(res => res.json())
                 .then(data => {
-                    document.getElementById("quote-text").innerText = '"' + data.message + '"';
-                    document.getElementById("quote-author").innerText = "- " + data.author + " -";
-                })
-                .catch(error => { document.getElementById("quote-text").innerText = "명언 실패! 😭"; });
+                    document.getElementById("quote-text").innerText = `"${data.message}"`;
+                    document.getElementById("quote-author").innerText = `- ${data.author} -`;
+                });
         }
 
         function getWeather() {
             fetch("https://api.open-meteo.com/v1/forecast?latitude=37.5665&longitude=126.9780&current_weather=true")
-                .then(response => response.json())
-                .then(data => { document.getElementById("weather-info").innerText = "현재 기온은 " + data.current_weather.temperature + "°C 입니다! 🌡️"; });
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById("weather-info").innerText = `현재 서울 기온: ${data.current_weather.temperature}°C 🌡️`;
+                });
         }
 
         function getCat() {
             fetch("https://api.thecatapi.com/v1/images/search")
-                .then(function (response) { return response.json(); })
-                .then(function (data) { document.getElementById("cat-img").src = data[0].url; });
+                .then(res => res.json())
+                .then(data => document.getElementById("cat-img").src = data[0].url);
         }
 
+        // -----------------------------------------
+        // 3. To-do List 로직
+        // -----------------------------------------
         let todos = [];
         function addTask() {
             let input = document.getElementById("todo-input");
-            let taskText = input.value;
-            if (taskText === "") { Swal.fire("앗!", "할 일을 먼저 적어주세요!", "warning"); return; }
-            let newTask = { text: taskText, isDone: false };
-            todos.push(newTask);
+            if (!input.value) return Swal.fire("앗!", "할 일을 입력하세요!", "warning");
+            todos.push({ text: input.value, isDone: false });
             input.value = "";
-            saveTasks();
-            renderTasks();
+            saveAndRender();
         }
 
-        function toggleDone(index) {
-            todos[index].isDone = !todos[index].isDone;
-            saveTasks();
-            renderTasks();
+        function toggleDone(i) {
+            todos[i].isDone = !todos[i].isDone;
+            saveAndRender();
         }
 
-        function deleteTask(index) {
-            todos.splice(index, 1);
-            saveTasks();
-            renderTasks();
+        function deleteTask(i) {
+            todos.splice(i, 1);
+            saveAndRender();
         }
 
-        function saveTasks() { localStorage.setItem("myTodos", JSON.stringify(todos)); }
+        function saveAndRender() {
+            localStorage.setItem("myTodos", JSON.stringify(todos));
+            renderTasks();
+        }
 
         function renderTasks() {
             let list = document.getElementById("todo-list");
             list.innerHTML = "";
-            for (let i = 0; i < todos.length; i++) {
+            todos.forEach((todo, i) => {
                 let li = document.createElement("li");
-                let span = document.createElement("span");
-                span.innerText = todos[i].text;
-                span.style.cursor = "pointer";
-                if (todos[i].isDone === true) { span.classList.add("done-text"); }
-                span.onclick = function () { toggleDone(i); };
-
-                let deleteBtn = document.createElement("button");
-                deleteBtn.innerText = "❌";
-                deleteBtn.onclick = function () { deleteTask(i); };
-
-                li.appendChild(span);
-                li.appendChild(deleteBtn);
+                li.innerHTML = `<span style="cursor:pointer; ${todo.isDone ? 'text-decoration:line-through; color:gray;' : ''}">${todo.text}</span> <button onclick="deleteTask(${i})">❌</button>`;
+                li.querySelector("span").onclick = () => toggleDone(i);
                 list.appendChild(li);
-            }
+            });
         }
 
         function loadTasks() {
-            let savedTodos = localStorage.getItem("myTodos");
-            if (savedTodos) {
-                let parsedTodos = JSON.parse(savedTodos);
-                if (parsedTodos.length > 0 && typeof parsedTodos[0] === "string") {
-                    todos = [];
-                    localStorage.removeItem("myTodos");
-                } else { todos = parsedTodos; }
-                renderTasks();
-            }
+            let saved = localStorage.getItem("myTodos");
+            if (saved) { todos = JSON.parse(saved); renderTasks(); }
         }
 
+        // -----------------------------------------
+        // 4. 시간 및 뽀모도로 타이머
+        // -----------------------------------------
         function updateClock() {
             let now = new Date();
-            let hours = String(now.getHours()).padStart(2, '0');
-            let minutes = String(now.getMinutes()).padStart(2, '0');
-            let seconds = String(now.getSeconds()).padStart(2, '0');
-            document.getElementById("real-time-clock").innerText = hours + ":" + minutes + ":" + seconds;
+            document.getElementById("real-time-clock").innerText = now.toLocaleTimeString();
         }
 
         function calculateDday() {
-            let currentYear = new Date().getFullYear();
-            let targetDate = new Date(currentYear + "-12-31");
-            let today = new Date();
-            let difference = targetDate.getTime() - today.getTime();
-            let daysLeft = Math.ceil(difference / (1000 * 60 * 60 * 24));
-
-            if (daysLeft > 0) { document.getElementById("d-day-text").innerText = "올해의 끝까지 D-" + daysLeft + " 🚀"; }
-            else if (daysLeft === 0) { document.getElementById("d-day-text").innerText = "D-Day! 목표 달성일입니다! 🎉"; }
-            else { document.getElementById("d-day-text").innerText = "목표일이 지났습니다! 새로운 목표를 세워볼까요? 🌟"; }
+            let diff = new Date("2025-12-31") - new Date();
+            let days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+            document.getElementById("d-day-text").innerText = days > 0 ? `올해 끝까지 D-${days} 🚀` : "새해 복 많이 받으세요! 🎊";
         }
 
-        let timeLeft = 25 * 60;
-        let timerInterval;
-        let alarmSound = new Audio("https://actions.google.com/sounds/v1/alarms/beep_short.ogg");
-
+        let timeLeft = 25 * 60, timerInterval;
         function updateTimerDisplay() {
-            let minutes = String(Math.floor(timeLeft / 60)).padStart(2, '0');
-            let seconds = String(timeLeft % 60).padStart(2, '0');
-            document.getElementById("pomodoro-time").innerText = minutes + ":" + seconds;
+            let m = String(Math.floor(timeLeft / 60)).padStart(2, '0');
+            let s = String(timeLeft % 60).padStart(2, '0');
+            document.getElementById("pomodoro-time").innerText = `${m}:${s}`;
         }
-
         function startTimer() {
             if (timerInterval) return;
-            timerInterval = setInterval(function () {
-                if (timeLeft > 0) {
-                    timeLeft--;
-                    updateTimerDisplay();
-                } else {
-                    clearInterval(timerInterval);
-                    timerInterval = null;
-                    alarmSound.play();
-                    Swal.fire("수고하셨습니다!", "집중 완료! 5분간 푹 쉬세요 ☕", "success");
+            timerInterval = setInterval(() => {
+                if (timeLeft > 0) { timeLeft--; updateTimerDisplay(); }
+                else { 
+                    clearInterval(timerInterval); timerInterval = null; 
+                    new Audio("https://actions.google.com/sounds/v1/alarms/beep_short.ogg").play();
+                    Swal.fire("집중 완료!", "5분간 휴식하세요 ☕", "success");
                 }
             }, 1000);
         }
+        function pauseTimer() { clearInterval(timerInterval); timerInterval = null; }
+        function resetTimer() { pauseTimer(); timeLeft = 25 * 60; updateTimerDisplay(); }
 
-        function pauseTimer() {
-            clearInterval(timerInterval);
-            timerInterval = null;
-        }
-
-        function resetTimer() {
-            pauseTimer();
-            timeLeft = 25 * 60;
-            updateTimerDisplay();
-        }
-
+        // -----------------------------------------
+        // 5. 폭죽 및 AI 챗봇
+        // -----------------------------------------
         function fireConfetti() {
-            confetti({
-                particleCount: 150,
-                spread: 80,
-                origin: { y: 0.6 }
-            });
-            Swal.fire(
-                "10일 완성 대성공! 🏆",
-                "여기까지 오신 수강생님, 진심으로 최고입니다! 자랑스러운 나만의 웹사이트 완성!!",
-                "success"
-            );
+            confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
+            Swal.fire("10일 완성 대성공! 🏆", "자랑스러운 나만의 웹사이트 완성!!", "success");
         }
 
-        function toggleMenu() {
-            let menu = document.getElementById("mobile-menu");
-            menu.classList.toggle("active");
-        }
-
-        // =========================================
-        // 🤖 AI 챗봇 두뇌 (포트폴리오 맞춤형!)
-        // =========================================
         function toggleChat() {
-            let chatBox = document.getElementById("chat-box");
-            let chatToggle = document.getElementById("chat-toggle");
-
-            if (chatBox.classList.contains("hidden")) {
-                chatBox.classList.remove("hidden");
-                chatToggle.style.display = "none";
-            } else {
-                chatBox.classList.add("hidden");
-                chatToggle.style.display = "block";
-            }
+            let box = document.getElementById("chat-box");
+            let btn = document.getElementById("chat-toggle");
+            box.classList.toggle("hidden");
+            btn.style.display = box.classList.contains("hidden") ? "block" : "none";
         }
 
-        function handleChatEnter(event) {
-            if (event.key === "Enter") {
-                sendChatMessage();
-            }
-        }
-
+        function handleChatEnter(e) { if (e.key === "Enter") sendChatMessage(); }
         function sendChatMessage() {
-            let inputField = document.getElementById("chat-input");
-            let message = inputField.value.trim();
-            if (message === "") return;
+            let input = document.getElementById("chat-input");
+            let msg = input.value.trim();
+            if (!msg) return;
 
-            let chatContent = document.getElementById("chat-content");
+            let content = document.getElementById("chat-content");
+            content.innerHTML += `<div class="user-msg">${msg}</div>`;
+            input.value = "";
 
-            let userDiv = document.createElement("div");
-            userDiv.className = "user-msg";
-            userDiv.innerText = message;
-            chatContent.appendChild(userDiv);
-            inputField.value = "";
-            chatContent.scrollTop = chatContent.scrollHeight;
-
-            setTimeout(function () {
-                let aiDiv = document.createElement("div");
-                aiDiv.className = "ai-msg";
-
-                if (message.includes("안녕")) {
-                    aiDiv.innerText = "안녕하세요! 반갑습니다. 저는 이 포트폴리오를 안내하는 AI입니다! 👋";
-                } else if (message.includes("기술") || message.includes("할 줄")) {
-                    aiDiv.innerText = "이 개발자님은 HTML, CSS, JavaScript를 마스터했고, 지금은 AI 챗봇과 클라우드까지 섭렵하고 있습니다! 💻🔥";
-                } else if (message.includes("목표")) {
-                    aiDiv.innerText = "멋진 AI 증강 풀스택 개발자가 되는 것이 목표라고 들었습니다! 🚀";
-                } else if (message.includes("연락") || message.includes("이메일")) {
-                    aiDiv.innerText = "이메일 aminadore79@gmail.com 으로 연락주시면 가장 빠릅니다! 📧";
-                } else {
-                    aiDiv.innerText = "앗, 그 질문은 아직 제가 배우지 못했습니다! 😅 '기술', '목표', '연락' 같은 단어로 다시 물어봐주시겠어요?";
-                }
-
-                chatContent.appendChild(aiDiv);
-                chatContent.scrollTop = chatContent.scrollHeight;
-            }, 1000);
+            setTimeout(() => {
+                let response = "앗, 아직 그 질문은 배우지 못했어요! 😅 '기술', '목표', '연락' 등을 물어봐주세요.";
+                if (msg.includes("안녕")) response = "안녕하세요! 포트폴리오 AI 비서입니다! 👋";
+                else if (msg.includes("기술")) response = "HTML, CSS, JS를 마스터하고 AI를 공부 중입니다! 💻";
+                else if (msg.includes("목표")) response = "최고의 AI 풀스택 개발자가 되는 것입니다! 🚀";
+                else if (msg.includes("연락")) response = "aminadore79@gmail.com 으로 이메일 주세요! 📧";
+                
+                content.innerHTML += `<div class="ai-msg">${response}</div>`;
+                content.scrollTop = content.scrollHeight;
+            }, 800);
         }
 
-        getQuote();
-        getWeather();
-        getCat();
+        // 초기화 실행
         loadTasks();
         updateClock();
         setInterval(updateClock, 1000);
         calculateDday();
-
+        getQuote();
+        getWeather();
+        getCat();
     </script>
 </body>
-
 </html>

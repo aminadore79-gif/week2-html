@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 
 <head>
     <meta charset="UTF-8">
@@ -7,10 +7,27 @@
     <title>About Me - 내 소개</title>
     <link rel="stylesheet" href="style.css">
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
+            // 1. 다크모드 설정 기억
             if (localStorage.getItem("myDarkMode") === "on") {
                 document.body.classList.add("dark-theme");
             }
+
+            // 2. ✨ 스크롤 감시자 (Intersection Observer)
+            const observerOptions = {
+                threshold: 0.1 
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active'); 
+                    }
+                });
+            }, observerOptions);
+
+            // 'reveal' 클래스가 붙은 모든 요소를 찾아 감시 시작
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
         });
     </script>
 </head>
@@ -39,26 +56,98 @@
     </div>
 
     <div style="text-align: center; padding: 50px 20px;">
-        <h1 style="font-size: 40px; color: #2c3e50;">👋 안녕하세요, 저는 미래의 풀스택 개발자입니다!</h1>
-        <p style="font-size: 20px; color: #7f8c8d; margin-top: 20px;">
-            단 10일 만에 대시보드를 뚝딱 만들어내고,<br>
-            지금은 반응형 포트폴리오를 만들고 있는 엄청난 성장판의 소유자죠. 😎
-        </p>
-        <img src="cat.jpg" alt="내 사진" style="max-width: 400px; width: 100%; margin-top: 30px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
-        <hr style="margin: 40px 0; border: 1px solid #eee;">
-        <h2 style="color: #2c3e50; font-size: 28px;">📊 나의 스킬 게이지</h2>
-        <div class="skill-container">
-            <div class="skill-bar"><div class="skill-level html-level">HTML 90%</div></div>
-            <div class="skill-bar"><div class="skill-level css-level">CSS 80%</div></div>
-            <div class="skill-bar"><div class="skill-level js-level">JS 70%</div></div>
-            <div class="skill-bar"><div class="skill-level git-level">Git & GitHub 85%</div></div>
+        <div class="reveal">
+            <h1 style="font-size: 40px; color: #2c3e50;">👋 안녕하세요, 저는 미래의 풀스택 개발자입니다!</h1>
+            <p style="font-size: 20px; color: #7f8c8d; margin-top: 20px;">
+                단 10일 만에 대시보드를 뚝딱 만들어내고,<br>
+                지금은 반응형 포트폴리오를 만들고 있는 엄청난 성장판의 소유자죠. 😎
+            </p>
+        </div>
+
+        <div class="reveal">
+            <img src="cat.jpg" alt="내 사진"
+                style="max-width: 400px; width: 100%; margin-top: 30px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
+        </div>
+
+        <hr style="margin: 40px 0; border: 1px solid #eee;" class="reveal">
+
+        <div class="reveal">
+            <h2 style="color: #2c3e50; font-size: 28px;">📊 나의 스킬 게이지</h2>
+            <div class="skill-container">
+                <div class="skill-bar"><div class="skill-level html-level">HTML 90%</div></div>
+                <div class="skill-bar"><div class="skill-level css-level">CSS 80%</div></div>
+                <div class="skill-bar"><div class="skill-level js-level">JS 70%</div></div>
+                <div class="skill-bar"><div class="skill-level git-level">Git & GitHub 85%</div></div>
+            </div>
+        </div>
+
+        <div class="reveal"
+            style="max-width: 600px; margin: 40px auto; padding: 20px; text-align: center; background-color: #f8f9fa; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+            <h3 style="color: #2c3e50;">📡 [통신 테스트] 비밀 스탯 불러오기</h3>
+            <p style="color: #7f8c8d; font-size: 14px;">(사내망을 우회하는 순수 JS 가짜 서버입니다!)</p>
+
+            <button id="fetch-btn" onclick="loadStatsFromServer()"
+                style="background-color: #3498db; color: white; border: none; padding: 10px 20px; border-radius: 5px; font-size: 16px; cursor: pointer; transition: 0.3s; margin-bottom: 15px;">
+                📥 서버에 데이터 요청하기
+            </button>
+
+            <div id="stat-display"
+                style="font-size: 18px; font-weight: bold; color: #333; min-height: 80px; padding: 15px; background: white; border-radius: 10px; border: 1px dashed #ccc;">
+                버튼을 눌러 데이터를 불러와보세요!
+            </div>
         </div>
     </div>
 
     <script>
+        // [햄버거 메뉴]
         function toggleMenu() {
             let menu = document.getElementById("mobile-menu");
             menu.classList.toggle("active");
+        }
+
+        // [가짜 서버] 진짜 서버인 척 1.5초 지연시켜주는 역할
+        function fakeFetchUserStats() {
+            return new Promise(function (resolve, reject) {
+                setTimeout(function () {
+                    let fakeData = {
+                        status: 200,
+                        data: {
+                            commits: 125,
+                            coffeeConsumed: 42,
+                            bugsFixed: 99
+                        }
+                    };
+                    resolve(fakeData);
+                }, 1500);
+            });
+        }
+
+        // [통신 실행] 버튼을 눌렀을 때 실행되는 메인 로직
+        async function loadStatsFromServer() {
+            let btn = document.getElementById("fetch-btn");
+            let display = document.getElementById("stat-display");
+
+            btn.innerText = "⏳ 서버에서 가져오는 중...";
+            btn.style.backgroundColor = "#95a5a6";
+            btn.disabled = true;
+            display.innerHTML = "통신 중... 📡<br><span style='font-size:12px; color:#999;'>(가짜 서버가 열심히 일하고 있습니다)</span>";
+
+            try {
+                let response = await fakeFetchUserStats();
+                if (response.status === 200) {
+                    display.innerHTML = `
+                        🔥 총 커밋 횟수: <span style="color:#e74c3c">${response.data.commits}회</span> <br>
+                        ☕ 마신 커피: <span style="color:#8e44ad">${response.data.coffeeConsumed}잔</span> <br>
+                        🐛 박멸한 버그: <span style="color:#27ae60">${response.data.bugsFixed}마리</span>
+                    `;
+                    btn.innerText = "✅ 데이터 수신 완료!";
+                    btn.style.backgroundColor = "#27ae60";
+                    btn.disabled = false;
+                }
+            } catch (error) {
+                display.innerText = "서버 에러 발생! 😱";
+                btn.disabled = false;
+            }
         }
     </script>
 </body>
