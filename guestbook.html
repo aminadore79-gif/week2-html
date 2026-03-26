@@ -8,16 +8,13 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        // 전역 감시자 변수 선언
         let observer;
 
         document.addEventListener("DOMContentLoaded", function() {
-            // 1. 다크모드 설정 기억
             if (localStorage.getItem("myDarkMode") === "on") {
                 document.body.classList.add("dark-theme");
             }
 
-            // 2. ✨ 스크롤 감시자 설정
             const observerOptions = { threshold: 0.1 };
             observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -27,37 +24,20 @@
                 });
             }, observerOptions);
 
-            // 초기 정적 요소 감시 시작
             document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-            
-            // 웹사이트 켜지면 저장된 데이터 불러오기
             loadGuestbook();
         });
     </script>
 </head>
 
 <body>
-    <header class="portfolio-header">
-        <div class="logo">🚀 My Portfolio</div>
-        <nav class="pc-menu">
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="projects.html">Projects</a></li>
-                <li><a href="guestbook.html">Guestbook</a></li>
-            </ul>
-        </nav>
-        <div class="hamburger" onclick="toggleMenu()">🍔</div>
-    </header>
-
-    <div class="mobile-menu" id="mobile-menu">
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="projects.html">Projects</a></li>
-            <li><a href="guestbook.html">Guestbook</a></li>
-        </ul>
+    <div id="loader" class="loader-wrapper">
+        <div class="spinner"></div>
+        <p>페이지를 불러오는 중입니다... 🚀</p>
     </div>
+
+    <div id="menu-container"></div>
+    <script src="menu.js"></script>
 
     <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
         <div class="reveal">
@@ -118,7 +98,6 @@
             for (let i = guestbookData.length - 1; i >= 0; i--) {
                 let entry = guestbookData[i];
                 let card = document.createElement("div");
-                // 🌟 새 카드에 reveal 클래스 부여
                 card.className = "gb-card reveal";
                 
                 let deleteBtn = "";
@@ -133,7 +112,6 @@
                 `;
                 list.appendChild(card);
                 
-                // 🌟 새로 생성된 카드를 감시 대상에 등록
                 if(observer) observer.observe(card);
             }
         }
@@ -158,10 +136,6 @@
         }
 
         document.getElementById("gb-name").addEventListener("input", renderGuestbook);
-
-        function toggleMenu() {
-            document.getElementById("mobile-menu").classList.toggle("active");
-        }
     </script>
 </body>
 </html>

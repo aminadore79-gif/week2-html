@@ -1,23 +1,22 @@
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Me - 내 소개</title>
     <link rel="stylesheet" href="style.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // 1. 다크모드 설정 기억
+            // 다크모드 유지
             if (localStorage.getItem("myDarkMode") === "on") {
                 document.body.classList.add("dark-theme");
             }
 
-            // 2. ✨ 스크롤 감시자 (Intersection Observer)
-            const observerOptions = {
-                threshold: 0.1 
-            };
-
+            // 스크롤 애니메이션
+            const observerOptions = { threshold: 0.1 };
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -25,35 +24,48 @@
                     }
                 });
             }, observerOptions);
-
-            // 'reveal' 클래스가 붙은 모든 요소를 찾아 감시 시작
             document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+            
+            // 🌟 삐까뻔쩍 레이더 차트 그리기 로직!
+            const ctx = document.getElementById('skillChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'radar', // 차트 모양: 레이더(다각형)
+                data: {
+                    labels: ['HTML', 'CSS', 'JavaScript', 'Git & GitHub', '소통 능력', '체력(치킨)'],
+                    datasets: [{
+                        label: '미래의 풀스택 개발자 능력치',
+                        data: [90, 80, 75, 85, 95, 100], // 내 진짜 능력치 점수!
+                        backgroundColor: 'rgba(52, 152, 219, 0.4)', // 파란색 반투명 배경
+                        borderColor: 'rgba(52, 152, 219, 1)', // 파란색 테두리
+                        pointBackgroundColor: '#e74c3c', // 꼭짓점 빨간색
+                        pointRadius: 5 // 꼭짓점 크기
+                    }]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            suggestedMin: 0,
+                            suggestedMax: 100,
+                            ticks: { display: false } // 중간 숫자 표기 숨김
+                        }
+                    },
+                    plugins: {
+                        legend: { labels: { font: { size: 14 } } }
+                    }
+                }
+            });
         });
     </script>
 </head>
 
 <body>
-    <header class="portfolio-header">
-        <div class="logo">🚀 My Portfolio</div>
-        <nav class="pc-menu">
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="projects.html">Projects</a></li>
-                <li><a href="guestbook.html">Guestbook</a></li>
-            </ul>
-        </nav>
-        <div class="hamburger" onclick="toggleMenu()">🍔</div>
-    </header>
-
-    <div class="mobile-menu" id="mobile-menu">
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="projects.html">Projects</a></li>
-            <li><a href="guestbook.html">Guestbook</a></li>
-        </ul>
+    <div id="loader" class="loader-wrapper">
+        <div class="spinner"></div>
+        <p>프로필을 불러오는 중입니다... 🚀</p>
     </div>
+
+    <div id="menu-container"></div>
+    <script src="menu.js"></script>
 
     <div style="text-align: center; padding: 50px 20px;">
         <div class="reveal">
@@ -72,14 +84,13 @@
         <hr style="margin: 40px 0; border: 1px solid #eee;" class="reveal">
 
         <div class="reveal">
-            <h2 style="color: #2c3e50; font-size: 28px;">📊 나의 스킬 게이지</h2>
-            <div class="skill-container">
-                <div class="skill-bar"><div class="skill-level html-level">HTML 90%</div></div>
-                <div class="skill-bar"><div class="skill-level css-level">CSS 80%</div></div>
-                <div class="skill-bar"><div class="skill-level js-level">JS 70%</div></div>
-                <div class="skill-bar"><div class="skill-level git-level">Git & GitHub 85%</div></div>
+            <h2 style="color: #2c3e50; font-size: 28px;">📊 나의 종합 스킬 게이지</h2>
+            <div style="max-width: 500px; margin: 0 auto; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                <canvas id="skillChart"></canvas>
             </div>
         </div>
+
+        <hr style="margin: 40px 0; border: 1px solid #eee;" class="reveal">
 
         <div class="reveal"
             style="max-width: 600px; margin: 40px auto; padding: 20px; text-align: center; background-color: #f8f9fa; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
@@ -99,30 +110,17 @@
     </div>
 
     <script>
-        // [햄버거 메뉴]
-        function toggleMenu() {
-            let menu = document.getElementById("mobile-menu");
-            menu.classList.toggle("active");
-        }
-
-        // [가짜 서버] 진짜 서버인 척 1.5초 지연시켜주는 역할
         function fakeFetchUserStats() {
             return new Promise(function (resolve, reject) {
                 setTimeout(function () {
-                    let fakeData = {
+                    resolve({
                         status: 200,
-                        data: {
-                            commits: 125,
-                            coffeeConsumed: 42,
-                            bugsFixed: 99
-                        }
-                    };
-                    resolve(fakeData);
+                        data: { commits: 125, coffeeConsumed: 42, bugsFixed: 99 }
+                    });
                 }, 1500);
             });
         }
 
-        // [통신 실행] 버튼을 눌렀을 때 실행되는 메인 로직
         async function loadStatsFromServer() {
             let btn = document.getElementById("fetch-btn");
             let display = document.getElementById("stat-display");
@@ -151,5 +149,4 @@
         }
     </script>
 </body>
-
 </html>

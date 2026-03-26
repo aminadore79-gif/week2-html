@@ -35,27 +35,13 @@
 </head>
 
 <body>
-    <header class="portfolio-header">
-        <div class="logo">🚀 My Portfolio</div>
-        <nav class="pc-menu">
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="projects.html">Projects</a></li>
-                <li><a href="guestbook.html">Guestbook</a></li>
-            </ul>
-        </nav>
-        <div class="hamburger" onclick="toggleMenu()">🍔</div>
-    </header>
-
-    <div class="mobile-menu" id="mobile-menu">
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="projects.html">Projects</a></li>
-            <li><a href="guestbook.html">Guestbook</a></li>
-        </ul>
+    <div id="loader" class="loader-wrapper">
+        <div class="spinner"></div>
+        <p>프로젝트를 불러오는 중입니다... 🚀</p>
     </div>
+
+    <div id="menu-container"></div>
+    <script src="menu.js"></script>
 
     <div style="max-width: 1000px; margin: 0 auto; padding: 20px;">
         <div class="reveal">
@@ -83,14 +69,6 @@
             </div>
         </div>
     </div>
-
-    <script>
-        // 메뉴 토글 함수
-        function toggleMenu() {
-            let menu = document.getElementById("mobile-menu");
-            menu.classList.toggle("active");
-        }
-    </script>
 </body>
 
 </html>

@@ -2,6 +2,7 @@
 <html lang="ko">
 
 <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>최종 복습 페이지 - 포트폴리오</title>
@@ -9,6 +10,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
     
     <script>
         // 1. 초기 실행 로직 (다크모드 & 스크롤 감시)
@@ -38,27 +40,13 @@
 </head>
 
 <body>
-    <header class="portfolio-header">
-        <div class="logo">🚀 My Portfolio</div>
-        <nav class="pc-menu">
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="projects.html">Projects</a></li>
-                <li><a href="guestbook.html">Guestbook</a></li>
-            </ul>
-        </nav>
-        <div class="hamburger" onclick="toggleMenu()">🍔</div>
-    </header>
-
-    <div class="mobile-menu" id="mobile-menu">
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="projects.html">Projects</a></li>
-            <li><a href="guestbook.html">Guestbook</a></li>
-        </ul>
+    <div id="loader" class="loader-wrapper">
+        <div class="spinner"></div>
+        <p>포트폴리오를 불러오는 중입니다... 🚀</p>
     </div>
+
+    <div id="menu-container"></div>
+    <script src="menu.js"></script>
 
     <div class="reveal" style="text-align: center; padding-top: 50px;">
         <h1 id="main-title">안녕하세요! aminadore79-gif입니다. 👋</h1>
@@ -185,10 +173,6 @@
         function toggleDarkMode() {
             document.body.classList.toggle("dark-theme");
             localStorage.setItem("myDarkMode", document.body.classList.contains("dark-theme") ? "on" : "off");
-        }
-
-        function toggleMenu() {
-            document.getElementById("mobile-menu").classList.toggle("active");
         }
 
         // -----------------------------------------
@@ -339,6 +323,55 @@
         getQuote();
         getWeather();
         getCat();
+    </script>
+    <canvas id="bg-canvas" style="position: fixed; top: 0; left: 0; z-index: -1; width: 100vw; height: 100vh; pointer-events: none;"></canvas>
+
+    <script>
+        // =========================================
+        // 🚀 Three.js 우주 배경 생성 마법!
+        // =========================================
+        const canvas = document.querySelector('#bg-canvas');
+        const scene = new THREE.Scene();
+        
+        // 카메라 세팅 (시야각, 화면비율, 최소/최대 거리)
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        
+        // 도화지에 그림을 그려주는 렌더러 (투명 배경 설정)
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true }); 
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        // 🌟 별(파티클) 만들기
+        const geometry = new THREE.BufferGeometry();
+        const vertices = [];
+        for ( let i = 0; i < 2000; i ++ ) {
+            vertices.push( THREE.MathUtils.randFloatSpread( 2000 ) ); // x 좌표
+            vertices.push( THREE.MathUtils.randFloatSpread( 2000 ) ); // y 좌표
+            vertices.push( THREE.MathUtils.randFloatSpread( 2000 ) ); // z 좌표
+        }
+        geometry.setAttribute( 'position', new THREE.Float32BufferAttribute( vertices, 3 ) );
+        
+        // 별의 색상과 크기 (우리의 테마 컬러인 민트색!)
+        const material = new THREE.PointsMaterial( { color: 0x00d8d6, size: 2.5 } ); 
+        const stars = new THREE.Points( geometry, material );
+        scene.add( stars );
+
+        camera.position.z = 500; // 카메라를 살짝 뒤로 빼서 전체를 봅니다.
+
+        // 🔄 애니메이션 루프 (별들을 서서히 회전시킴)
+        function animate() {
+            requestAnimationFrame( animate );
+            stars.rotation.x += 0.0003; // X축 회전 속도
+            stars.rotation.y += 0.0005; // Y축 회전 속도
+            renderer.render( scene, camera );
+        }
+        animate();
+
+        // 📱 화면 크기가 바뀔 때(창 조절, 모바일 회전) 3D 화면도 맞춰서 찌그러지지 않게 조절
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
     </script>
 </body>
 </html>
