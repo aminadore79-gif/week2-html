@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>리액트 방명록</title>
+    
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        body { font-family: 'Arial', sans-serif; background-color: #f4f6f9; text-align: center; padding: 30px; }
+        .container { max-width: 500px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        input, textarea { width: 100%; box-sizing: border-box; margin-bottom: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; font-family: inherit;}
+        button { width: 100%; padding: 12px; background-color: #27ae60; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold; transition: 0.2s; }
+        button:hover { background-color: #219150; }
+        
+        /* 방명록 카드 디자인 */
+        .card { background: #f9f9f9; border-left: 5px solid #27ae60; padding: 15px; margin-top: 15px; text-align: left; border-radius: 5px; position: relative; animation: fadeIn 0.5s ease-out; }
+        .delete-btn { position: absolute; top: 10px; right: 10px; background-color: #ff4757; width: auto; padding: 5px 10px; font-size: 12px; }
+        .delete-btn:hover { background-color: #c0392b; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        function Guestbook() {
+            // 🧠 1. 상태(State) 선언하기
+            // 배열([])을 사용해 방명록 목록 전체를 기억합니다!
+            const [entries, setEntries] = React.useState([]); 
+            const [name, setName] = React.useState("");       
+            const [message, setMessage] = React.useState(""); 
+
+            // ✍️ 2. 방명록 등록 함수
+            const handleAdd = () => {
+                if (!name || !message) {
+                    alert("이름과 내용을 모두 입력해주세요!");
+                    return;
+                }
+                
+                // 새로운 방명록 데이터 포장
+                const newEntry = {
+                    id: Date.now(), // 삭제할 때 누구인지 찾기 위한 고유 신분증(시간값)
+                    name: name,
+                    message: message,
+                    date: new Date().toLocaleString()
+                };
+
+                // 🌟 마법의 문법: [새글, ...기존글들] -> 새 글을 맨 앞에 넣고 기존 글을 뒤에 이어붙여라!
+                setEntries([newEntry, ...entries]);
+                
+                // 입력창 싹 비우기
+                setName("");
+                setMessage("");
+            };
+
+            // 🗑️ 3. 방명록 삭제 함수
+            const handleDelete = (idToRemove) => {
+                // 🌟 마법의 함수 filter: 지우려는 id랑 다른 애들만 남겨서 새로운 목록을 만들어라!
+                const updatedEntries = entries.filter(entry => entry.id !== idToRemove);
+                setEntries(updatedEntries);
+            };
+
+            // 🎨 4. 화면에 그리기 (렌더링)
+            return (
+                <div className="container">
+                    <h2 style={{color: '#2c3e50'}}>📝 리액트 초고속 방명록</h2>
+                    
+                    {/* 입력 구역 */}
+                    <div>
+                        <input 
+                            type="text" 
+                            placeholder="이름 (닉네임)" 
+                            value={name} 
+                            onChange={(e) => setName(e.target.value)} 
+                        />
+                        <textarea 
+                            placeholder="방명록을 남겨주세요!" 
+                            value={message} 
+                            onChange={(e) => setMessage(e.target.value)} 
+                            rows="3"
+                        ></textarea>
+                        <button onClick={handleAdd}>✍️ 방명록 남기기</button>
+                    </div>
+
+                    <hr style={{margin: '20px 0', border: '1px solid #eee'}} />
+
+                    {/* 목록 출력 구역 */}
+                    <div>
+                        {entries.length === 0 ? (
+                            <p style={{color: '#888'}}>아직 작성된 방명록이 없습니다. 첫 글을 남겨보세요!</p>
+                        ) : (
+                            // 🌟 마법의 함수 map: 배열 안의 데이터 개수만큼 도장 찍듯이 카드를 찍어내라!
+                            entries.map((entry) => (
+                                <div className="card" key={entry.id}>
+                                    <button className="delete-btn" onClick={() => handleDelete(entry.id)}>삭제</button>
+                                    <h4 style={{margin: '0 0 10px 0', color: '#2c3e50'}}>
+                                        👤 {entry.name} <span style={{fontSize: '12px', color: '#999', fontWeight: 'normal'}}>{entry.date}</span>
+                                    </h4>
+                                    <p style={{margin: 0, color: '#333', lineHeight: '1.5'}}>{entry.message}</p>
+                                </div>
+                            ))
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<Guestbook />);
+    </script>
+</body>
+</html>
